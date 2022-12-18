@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Музыкальный проигрыватель</string>
+    <string name="shuffle_btn">Перемешать</string>
+    <string name="favourites_btn">Любимые</string>
+    <string name="total_songs">Все песни</string>
+    <string name="world_of_music">Мир музыки</string>
+    <string name="song_name">Название музыки</string>
+    <string name="back_btn">Назад</string>
+    <string name="start_tv">00:00</string>
+    <string name="end_tv">Загрузка ...</string>
+    <string name="repeat_btn">Повторить</string>
+    <string name="equalizer_btn">Эквалайзер</string>
+    <string name="timer_btn">Таймер</string>
+    <string name="share_btn">Поделиться</string>
+    <string name="playlist_btn">Плэй лист</string>
+    <string name="open">ОТКРЫТЬ</string>
+    <string name="close">ЗАКРЫТЬ</string>
+    <string name="permission_granted">РАЗРЕШЕНИЕ ПОЛУЧЕНО</string>
+    <string name="app_icon">Иконка</string>
+    <string name="text_nav">Добро пожаловать в мир музыки</string>
+    <string name="feedback">Обратная связь</string>
+    <string name="setting">Настройки</string>
+    <string name="about">Сведения</string>
+    <string name="exit">Выход</string>
+    <string name="song_album">Музыкальный альбом</string>
+</resources>

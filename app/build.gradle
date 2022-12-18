@@ -1,0 +1,71 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "ru.netology.musicplayer"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures{
+        viewBinding true
+    }
+
+}
+def recyclerview_version = "1.2.1"
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.21"
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
+
+//    для проекта
+    //Glide Быстрая и эффективная библиотека загрузки изображений для Android, ориентированная на плавную прокрутку.:  //
+    //Скорость, с которой изображения могут быть декодированы.
+    //Количество помех, возникающих при декодировании изображений.
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    //Вычислительный процессор Glide. Должен быть включен во все приложения и во все библиотеки, которые используют модули Glide для настройки
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+
+
+//    библиотека для recyclerview. список песен
+    //implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+    // For control over item selection of both touch and mouse driven selection
+    //implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+}
+
+//    для проекта использовал
+//1.для viewBinding между активити и фрагментами
+//buildFeatures{
+//    viewBinding true
+//}
