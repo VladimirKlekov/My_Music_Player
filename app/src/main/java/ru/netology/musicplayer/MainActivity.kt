@@ -34,9 +34,19 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestRuntimePermission()
+        //requestRuntimePermission()//глючит разрешение
         setTheme(R.style.coolPinkNav)
+        //вернул из private fun initializeLayout() из-за багов
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        /**для nav drawer выезжающая навигационная панель из меню*/
+        toggle = ActionBarDrawerToggle(this, binding.root, R.string.open, R.string.close)
+        binding.root.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if(requestRuntimePermission())
         initializeLayout()
+
 
         /**кнопки*/
         binding.shuffleBtn.setOnClickListener {
@@ -76,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /** для получение дотупа фото, мультимедиа, файлам на устройстве*/
-    private fun requestRuntimePermission() {
+    private fun requestRuntimePermission():Boolean {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -88,9 +98,12 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 13
             )
+            return false
         }
+        return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)//для подавления ошибки MusicListMA = getAllAudio()
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -99,9 +112,11 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == 13) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, (R.string.permission_granted), Toast.LENGTH_SHORT).show()
-            else ActivityCompat.requestPermissions(
+                //MusicListMA = getAllAudio()
+                initializeLayout()
+            }else ActivityCompat.requestPermissions(
                 this,
                 arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 13
@@ -120,15 +135,6 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("SetTextI18n")//подавление количество песен (список)
     private fun initializeLayout() {
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        /**для nav drawer выезжающая навигационная панель из меню*/
-        toggle = ActionBarDrawerToggle(this, binding.root, R.string.open, R.string.close)
-        binding.root.addDrawerListener(toggle)
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         /**для recyclerview в activity_main*/
         val musicList = ArrayList<String>()//список музыки
         MusicListMA = getAllAudio()
