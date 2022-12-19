@@ -60,6 +60,16 @@ class PlayerActivity : AppCompatActivity() {
                 //медиаплеер
                 createMediaPlayer()
             }
+            "MainActivity" ->{
+                musicListPA = ArrayList()
+                musicListPA.addAll(MainActivity.MusicListMA)
+                //случайный порядок
+                musicListPA.shuffle()
+                //плэй-пауза
+                setLayout()
+                //медиаплеер
+                createMediaPlayer()
+            }
         }
     }
 
