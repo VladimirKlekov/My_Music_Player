@@ -38,7 +38,7 @@ class MusicAdapter(private val context: Context, private val musicList: ArrayLis
         holder.duration.text = formatDuration(musicList[position].duration)
         //подгрузка иконок
         Glide.with(context)
-            .load(musicList)
+            .load(musicList[position].artUri)
             .apply (RequestOptions().placeholder(R.drawable.music_player_icon_slash_screen).centerCrop())
                 .into(holder.image)
         //продолж

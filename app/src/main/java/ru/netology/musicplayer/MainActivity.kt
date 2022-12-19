@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     /**для override fun onCreate(savedInstanceState: Bundle?) вынес в функцию, что бы не мешало */
     @RequiresApi(Build.VERSION_CODES.R)
-    @SuppressLint("SetTextI18n")//подавление количество песен = 5(список)
+    @SuppressLint("SetTextI18n")//подавление количество песен (список)
     private fun initializeLayout() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**data class Music получение аудио*/
-    @SuppressLint("Recycle", "Range")
+    @SuppressLint("Recycle", "Range")//анатация помогла решить проблему
     @RequiresApi(Build.VERSION_CODES.R)
     private fun getAllAudio(): ArrayList<Music>{
         val tempList = ArrayList<Music>()
