@@ -31,9 +31,20 @@ class PlayerActivity : AppCompatActivity() {
         initializeLayout()
 
         /**кнопки*/
+        binding.previousBtnPA.setOnClickListener {
+            prevNextSong(click = false)
+        }
+
+        binding.nextBtnPA.setOnClickListener {
+            prevNextSong(click = true)
+        }
+
         binding.playPauseBtnPA.setOnClickListener{
-            if(isPlaying)pauseMusic()
-            else playMusic()
+            if(isPlaying) {
+                pauseMusic()
+            } else {
+                playMusic()
+            }
         }
     }
     /**для override fun onCreate(savedInstanceState: Bundle?) вынес в функцию, что бы не мешало */
@@ -89,4 +100,34 @@ class PlayerActivity : AppCompatActivity() {
         isPlaying = false
         mediaPlayer!!.pause()
     }
+
+    /** кнопки вперед - назад*/
+    private fun prevNextSong(click: Boolean){
+        if(click){
+            //позиция увеличена
+            //++songPosition
+            setSongPosition(click = true)
+            setLayout()
+            createMediaPlayer()
+        }else{
+        //позиция уменьшена
+        //--songPosition
+        setSongPosition(click = false)
+        setLayout()
+        createMediaPlayer()
+        }
+    }
+      //TODO
+    private fun setSongPosition(click:Boolean){
+        if(click){
+            if(musicListPA.size -1 == songPosition) {
+                songPosition = 0
+            }else ++songPosition
+        } else {
+            if(0 == songPosition) {
+                songPosition = musicListPA.size - 1
+            }else --songPosition
+        }
+    }
+
 }
