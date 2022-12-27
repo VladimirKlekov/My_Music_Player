@@ -55,6 +55,18 @@
                android:textColor="@color/black"
                android:textAllCaps="false"/>
 
+           <Button
+               android:id="@+id/playServerBtn"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:contentDescription="@string/playlist_btn"
+               style="@style/Widget.AppCompat.Button.Borderless"
+               android:drawableTop="@drawable/cloud_icon"
+               android:text="@string/cloud"
+               android:textColor="@color/black"
+               android:textAllCaps="false"/>
+
        </LinearLayout>
 
        <TextView

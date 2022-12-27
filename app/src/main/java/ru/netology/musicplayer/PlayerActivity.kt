@@ -1,14 +1,19 @@
 package ru.netology.musicplayer
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.databinding.ActivityPlayerBinding
 import ru.netology.musicplayer.dto.Music
+import ru.netology.musicplayer.service.MusicService
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity(), ServiceConnection {
 
     /**перечень Music*/
     companion object {
@@ -19,6 +24,8 @@ class PlayerActivity : AppCompatActivity() {
         var mediaPlayer: MediaPlayer? = null
         //плай-пауза
         var isPlaying: Boolean = false
+        //сервис
+        var musicService:MusicService? = null
     }
 
     private lateinit var binding: ActivityPlayerBinding
@@ -28,6 +35,11 @@ class PlayerActivity : AppCompatActivity() {
         setTheme(R.style.coolPick)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
+        val intent = Intent(this, MusicService::class.java)
+        bindService(intent, this, BIND_AUTO_CREATE)
+        startService(intent)
+
         initializeLayout()
 
         /**кнопки*/
@@ -58,7 +70,7 @@ class PlayerActivity : AppCompatActivity() {
                 //плэй-пауза
                 setLayout()
                 //медиаплеер
-                createMediaPlayer()
+                //createMediaPlayer() - вынес в сервис
             }
             "MainActivity" ->{
                 musicListPA = ArrayList()
@@ -68,7 +80,7 @@ class PlayerActivity : AppCompatActivity() {
                 //плэй-пауза
                 setLayout()
                 //медиаплеер
-                createMediaPlayer()
+                //createMediaPlayer() - вынес в сервис
             }
         }
     }
@@ -85,11 +97,11 @@ class PlayerActivity : AppCompatActivity() {
     /** медиаплеер*/
     private fun createMediaPlayer(){
         try {
-            if (mediaPlayer == null) mediaPlayer = MediaPlayer()
-            mediaPlayer!!.reset()
-            mediaPlayer!!.setDataSource(musicListPA[songPosition].path)
-            mediaPlayer!!.prepare()
-            mediaPlayer!!.start()
+            if (musicService!!.mediaPlayer == null) musicService!!.mediaPlayer = MediaPlayer()
+            musicService!!.mediaPlayer!!.reset()
+            musicService!!.mediaPlayer!!.setDataSource(musicListPA[songPosition].path)
+            musicService!!.mediaPlayer!!.prepare()
+            musicService!!.mediaPlayer!!.start()
             //плэй-пауза смена кнопки
             isPlaying = true
             binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
@@ -102,13 +114,13 @@ class PlayerActivity : AppCompatActivity() {
     private fun playMusic(){
         binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
         isPlaying = true
-        mediaPlayer!!.start()
+        musicService!!.mediaPlayer!!.start()
     }
 
     private fun pauseMusic(){
         binding.playPauseBtnPA.setIconResource(R.drawable.play_icon)
         isPlaying = false
-        mediaPlayer!!.pause()
+        musicService!!.mediaPlayer!!.pause()
     }
 
     /** кнопки вперед - назад*/
@@ -138,6 +150,19 @@ class PlayerActivity : AppCompatActivity() {
                 songPosition = musicListPA.size - 1
             }else --songPosition
         }
+
+
+    }
+
+    /**для class MusicService и Binder*/
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+       val binder = service as MusicService.MyBinder
+        musicService = binder.currentService()
+        createMediaPlayer()
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        musicService = null
     }
 
 }

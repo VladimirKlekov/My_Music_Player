@@ -20,6 +20,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders.usesCleartextTraffic = false
+        }
+
+        debug {
+            manifestPlaceholders.usesCleartextTraffic = true
+
         }
     }
     compileOptions {
@@ -36,6 +42,9 @@ android {
 
 }
 def recyclerview_version = "1.2.1"
+def retrofit_version = "2.9.0"
+def okhttp_version = "4.9.1"
+def gson_version = "2.9.0"
 
 dependencies {
 
@@ -49,6 +58,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
 
+
+
+
 //    для проекта
     //Glide Быстрая и эффективная библиотека загрузки изображений для Android, ориентированная на плавную прокрутку.:  //
     //Скорость, с которой изображения могут быть декодированы.
@@ -56,7 +68,14 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     //Вычислительный процессор Glide. Должен быть включен во все приложения и во все библиотеки, которые используют модули Glide для настройки
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+//для получения Json
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.google.code.gson:gson:$gson_version"
+   
 
+//Retrofit
+//    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+//    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
 //    библиотека для recyclerview. список песен
     //implementation "androidx.recyclerview:recyclerview:$recyclerview_version"

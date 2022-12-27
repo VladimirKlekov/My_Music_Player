@@ -24,4 +24,5 @@
     <string name="about">Сведения</string>
     <string name="exit">Выход</string>
     <string name="song_album">Музыкальный альбом</string>
+    <string name="cloud">Облако</string>
 </resources>

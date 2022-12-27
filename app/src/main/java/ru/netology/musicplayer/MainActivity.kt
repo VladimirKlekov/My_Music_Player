@@ -20,7 +20,7 @@ import ru.netology.musicplayer.dto.Music
 import java.io.File
 import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle: ActionBarDrawerToggle
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     /**перечень Music*/
     companion object {
         lateinit var MusicListMA: ArrayList<Music>
-    }
+           }
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         //вернул из private fun initializeLayout() из-за багов
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         /**для nav drawer выезжающая навигационная панель из меню*/
         toggle = ActionBarDrawerToggle(this, binding.root, R.string.open, R.string.close)
         binding.root.addDrawerListener(toggle)
@@ -46,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if(requestRuntimePermission())
         initializeLayout()
-
 
         /**кнопки*/
         binding.shuffleBtn.setOnClickListener {
@@ -82,6 +82,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.navExit -> exitProcess(1)
             }
             true
+        }
+
+        binding.playServerBtn.setOnClickListener{
+            val intent = Intent(this@MainActivity, ServerActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -184,6 +189,7 @@ class MainActivity : AppCompatActivity() {
                     val durationC = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION))
                     val albumIdC = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)).toString()
                     val uri = Uri.parse("content://media/external/audio/albumart")
+
                     val artUriC = Uri.withAppendedPath(uri, albumIdC).toString()
                     val music = Music(
                         id = idC,
@@ -203,5 +209,7 @@ class MainActivity : AppCompatActivity() {
 
         return tempList
     }
-}
+   }
+
+
 
