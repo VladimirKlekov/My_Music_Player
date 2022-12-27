@@ -45,6 +45,7 @@ def recyclerview_version = "1.2.1"
 def retrofit_version = "2.9.0"
 def okhttp_version = "4.9.1"
 def gson_version = "2.9.0"
+def media_version = "1.3.1"
 
 dependencies {
 
@@ -68,6 +69,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     //Вычислительный процессор Glide. Должен быть включен во все приложения и во все библиотеки, которые используют модули Glide для настройки
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+    //для уведомлений
+    implementation "androidx.media:media:$media_version"
 //для получения Json
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.google.code.gson:gson:$gson_version"
