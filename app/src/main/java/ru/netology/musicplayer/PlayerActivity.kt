@@ -1,5 +1,6 @@
 package ru.netology.musicplayer
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
@@ -26,9 +27,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
         var isPlaying: Boolean = false
         //сервис
         var musicService:MusicService? = null
+         //TODO Глюки или утечка памяти? добавил анотацию
+        //перенес в объект для доступа в NotificationReceiver
+        @SuppressLint("StaticFieldLeak")
+        lateinit var binding: ActivityPlayerBinding
     }
 
-    private lateinit var binding: ActivityPlayerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,12 +117,16 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
     /** плэй-пауза*/
     private fun playMusic(){
         binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
+        //для меню-уведомления
+        musicService!!.showNotification(R.drawable.pause_icon)
         isPlaying = true
         musicService!!.mediaPlayer!!.start()
     }
 
     private fun pauseMusic(){
         binding.playPauseBtnPA.setIconResource(R.drawable.play_icon)
+        //для меню-уведомления
+        musicService!!.showNotification(R.drawable.play_icon)
         isPlaying = false
         musicService!!.mediaPlayer!!.pause()
     }
@@ -160,7 +168,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
         musicService = binder.currentService()
         createMediaPlayer()
 //уведомления
-        musicService!!.showNotification()
+        musicService!!.showNotification(R.drawable.pause_icon)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {

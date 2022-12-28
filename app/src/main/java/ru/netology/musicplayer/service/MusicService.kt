@@ -35,7 +35,7 @@ class MusicService : Service() {
     }
 
     /**меню уведомления с кнопками*/
-    fun showNotification() {
+    fun showNotification(playPauseBtn:Int) {
         //действия кнопки в меню-уведомлении
         val prevIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -68,7 +68,8 @@ class MusicService : Service() {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
             .addAction(R.drawable.previous_icon, "Previous", prevPendingIntent)
-            .addAction(R.drawable.play_icon, "Play", playPendingIntent)
+           // .addAction(R.drawable.play_icon, "Play", playPendingIntent)
+            .addAction(playPauseBtn, "Play", playPendingIntent)//вынес в функцию в NotificationReceiver
             .addAction(R.drawable.next_icon, "Next", nextPendingIntent)
             .addAction(R.drawable.exit_icon, "Exit", exitPendingIntent)
             .build()
