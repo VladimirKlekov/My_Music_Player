@@ -2,19 +2,32 @@ package ru.netology.musicplayer
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
+import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.adapter.MusicJson
+import ru.netology.musicplayer.adapter.MusicServerAdapter
+import ru.netology.musicplayer.adapter.Track
 import ru.netology.musicplayer.databinding.ActivityServerBinding
+import ru.netology.musicplayer.dto.Music
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 class ServerActivity : AppCompatActivity() {
+    private lateinit var musicServerAdapter: MusicServerAdapter
+
+
+    /**перечень Music*/
+    companion object {
+
+    }
 
     val logging = HttpLoggingInterceptor().apply {
         if (BuildConfig.DEBUG) {
@@ -35,7 +48,8 @@ class ServerActivity : AppCompatActivity() {
         binding = ActivityServerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         json()
-        binding.musicRVServer.setRecyclerListener { request }
+        dataRecyclerView()
+       binding.musicRVServer.setRecyclerListener { request }
 
     }
 
@@ -44,6 +58,7 @@ class ServerActivity : AppCompatActivity() {
     fun json() {
 
         val musicListJson = object : TypeToken<List<MusicJson>>() {}
+        val musicTrack = object : TypeToken<List<Track>>() {}
 
         thread {
             try {
@@ -57,11 +72,27 @@ class ServerActivity : AppCompatActivity() {
                         it.body?.string() ?: throw RuntimeException("body is null")
                     }
                     .let {
-                        gson.fromJson(it, musicListJson.type)
+                        gson.fromJson(it, MusicJson::class.java)
                     }
             } catch (e: IOException) {
             }
 
         }
+    }
+
+    private fun dataRecyclerView() {
+        /**для recyclerview в */
+        val musicList = ArrayList<String>()//список музыки
+//        ServerActivity.MusicListServer
+        musicList.add("1 Song")
+        musicList.add("2 Song")
+        musicList.add("3 Song")
+        musicList.add("4 Song")
+        musicList.add("5 Song")
+        binding.musicRVServer.setHasFixedSize(true)
+        binding.musicRVServer.setItemViewCacheSize(13)//размер кэша для количества музыки
+        binding.musicRVServer.layoutManager = LinearLayoutManager(this@ServerActivity)//привязка верстки
+
+
     }
 }

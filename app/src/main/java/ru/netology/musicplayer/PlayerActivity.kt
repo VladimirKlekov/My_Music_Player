@@ -33,7 +33,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
         lateinit var binding: ActivityPlayerBinding
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.coolPick)
@@ -158,8 +157,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
                 songPosition = musicListPA.size - 1
             }else --songPosition
         }
-
-
     }
 
     /**для class MusicService и Binder*/

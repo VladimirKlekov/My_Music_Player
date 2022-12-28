@@ -13,6 +13,7 @@ import ru.netology.musicplayer.PlayerActivity
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.application.ApplicationClass
 import ru.netology.musicplayer.application.NotificationReceiver
+import ru.netology.musicplayer.dto.getImgArt
 
 class MusicService : Service() {
     private val myBinder = MyBinder()
@@ -49,17 +50,21 @@ class MusicService : Service() {
         val exitIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.EXIT)
         val exitPendingIntent = PendingIntent.getBroadcast(baseContext, 0, exitIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        //для загрузки изображения
+        val imgArt = getImgArt(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
+        val image = if(imgArt != null){
+            //Возвращает декодированное растровое изображение или значение null, если изображение не удалось декодировать.
+            BitmapFactory.decodeByteArray(imgArt, 0, imgArt.size)
+            }else{
+            BitmapFactory.decodeResource(resources, R.drawable.music_player_icon_slash_screen)
+            }
+
         //уведомление при старте. установить как минимум smallIcon, contentTitle и contentText. Если пропустить одно, уведомление не будет отображаться
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
             .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
             .setSmallIcon(R.drawable.music_icon)
-            .setLargeIcon(
-                BitmapFactory.decodeResource(
-                    resources,
-                    R.drawable.music_player_icon_slash_screen
-                )
-            )
+            .setLargeIcon(image)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediaSession.sessionToken)
