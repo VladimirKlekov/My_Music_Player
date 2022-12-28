@@ -25,7 +25,7 @@ class MusicService : Service() {
     }
 
     /**внутренний класс для доступа
-     * Binder - это простой RecyclerView с привязкой к данным и шаблоном mvvm для andorid listview. */
+     * Binder - это простой RecyclerView с привязкой к данным и шаблоном  */
     inner class MyBinder : Binder() {
         fun currentService(): MusicService {
             return this@MusicService
@@ -38,7 +38,7 @@ class MusicService : Service() {
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
             .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
-            .setSmallIcon(R.drawable.play_list_icon)
+            .setSmallIcon(R.drawable.music_icon)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
