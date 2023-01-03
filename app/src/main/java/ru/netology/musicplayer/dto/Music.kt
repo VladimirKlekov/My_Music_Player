@@ -1,6 +1,7 @@
 package ru.netology.musicplayer.dto
 
 import android.media.MediaMetadataRetriever
+import ru.netology.musicplayer.PlayerActivity
 import java.util.concurrent.TimeUnit
 
 data class Music(
@@ -29,6 +30,18 @@ fun getImgArt(path: String): ByteArray? {
     retriever.setDataSource(path)
 
     return retriever.embeddedPicture
+}
+//TODO
+fun setSongPosition(increment:Boolean){
+    if(increment){
+        if(PlayerActivity.musicListPA.size -1 == PlayerActivity.songPosition) {
+            PlayerActivity.songPosition = 0
+        }else ++PlayerActivity.songPosition
+    } else {
+        if(0 == PlayerActivity.songPosition) {
+            PlayerActivity.songPosition = PlayerActivity.musicListPA.size - 1
+        }else --PlayerActivity.songPosition
+    }
 }
 //Класс MediaMetadataRetriever предоставляет унифицированный интерфейс для извлечения кадров и
 // метаданных из входного медиафайла. Он находится в пакете android.media . Например: получение

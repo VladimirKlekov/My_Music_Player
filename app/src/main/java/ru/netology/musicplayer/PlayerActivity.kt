@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.databinding.ActivityPlayerBinding
 import ru.netology.musicplayer.dto.Music
+import ru.netology.musicplayer.dto.setSongPosition
 import ru.netology.musicplayer.service.MusicService
 
 class PlayerActivity : AppCompatActivity(), ServiceConnection {
@@ -47,11 +48,11 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
 
         /**кнопки*/
         binding.previousBtnPA.setOnClickListener {
-            prevNextSong(click = false)
+            prevNextSong(increment = false)
         }
 
         binding.nextBtnPA.setOnClickListener {
-            prevNextSong(click = true)
+            prevNextSong(increment = true)
         }
 
         binding.playPauseBtnPA.setOnClickListener{
@@ -108,6 +109,8 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
             //плэй-пауза смена кнопки
             isPlaying = true
             binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
+            //уведомления
+            musicService!!.showNotification(R.drawable.pause_icon)
         }catch (e:Exception){
             return
         }
@@ -131,41 +134,29 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
     }
 
     /** кнопки вперед - назад*/
-    private fun prevNextSong(click: Boolean){
-        if(click){
+    private fun prevNextSong(increment: Boolean){
+        if(increment){
             //позиция увеличена
             //++songPosition
-            setSongPosition(click = true)
+            setSongPosition(increment = true)
             setLayout()
             createMediaPlayer()
         }else{
         //позиция уменьшена
         //--songPosition
-        setSongPosition(click = false)
+        setSongPosition(increment = false)
         setLayout()
         createMediaPlayer()
         }
     }
-      //TODO
-    private fun setSongPosition(click:Boolean){
-        if(click){
-            if(musicListPA.size -1 == songPosition) {
-                songPosition = 0
-            }else ++songPosition
-        } else {
-            if(0 == songPosition) {
-                songPosition = musicListPA.size - 1
-            }else --songPosition
-        }
-    }
+
 
     /**для class MusicService и Binder*/
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
        val binder = service as MusicService.MyBinder
         musicService = binder.currentService()
         createMediaPlayer()
-//уведомления
-        musicService!!.showNotification(R.drawable.pause_icon)
+
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {

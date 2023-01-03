@@ -81,4 +81,19 @@ class MusicService : Service() {
         //предоставляя пользователю текущее уведомление, которое будет отображаться в этом состоянии.
         startForeground(13, notification)
     }
+    /** медиаплеер*/
+    fun createMediaPlayer() {
+        try {
+            if (PlayerActivity.musicService!!.mediaPlayer == null) PlayerActivity.musicService!!.mediaPlayer =
+                MediaPlayer()
+            PlayerActivity.musicService!!.mediaPlayer!!.reset()
+            PlayerActivity.musicService!!.mediaPlayer!!.setDataSource(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
+            PlayerActivity.musicService!!.mediaPlayer!!.prepare()
+            PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
+            //уведомления
+            PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon)
+        } catch (e: Exception) {
+            return
+        }
+    }
 }
