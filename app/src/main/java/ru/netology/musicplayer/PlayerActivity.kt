@@ -7,11 +7,13 @@ import android.content.ServiceConnection
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.databinding.ActivityPlayerBinding
 import ru.netology.musicplayer.dto.Music
+import ru.netology.musicplayer.dto.formatDuration
 import ru.netology.musicplayer.dto.setSongPosition
 import ru.netology.musicplayer.service.MusicService
 
@@ -62,6 +64,17 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
                 playMusic()
             }
         }
+        //https://developer.android.com/reference/android/widget/SeekBar
+        binding.seekBarPA.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if(fromUser) musicService!!.mediaPlayer!!.seekTo(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
+
+        })
     }
     /**для override fun onCreate(savedInstanceState: Bundle?) вынес в функцию, что бы не мешало */
     fun initializeLayout(){
@@ -111,6 +124,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
             binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
             //уведомления
             musicService!!.showNotification(R.drawable.pause_icon)
+            //seekBar взял функцию из Music
+            //binding.tvSeekBarStart.text = formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+            binding.tvSeekBarStart.text = formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
+            binding.tvSeekBarEnd.text = formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+            binding.seekBarPA.progress = 0
+            binding.seekBarPA.max = musicService!!.mediaPlayer!!.duration
         }catch (e:Exception){
             return
         }
