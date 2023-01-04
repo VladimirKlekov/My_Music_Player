@@ -18,8 +18,9 @@
         android:layout_marginTop="2dp">
 
         <ImageButton
+            android:id="@+id/backBtnPLA"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/padding_50dp"
+            android:layout_height="@dimen/padding_40dp"
             android:src="@drawable/back_icon"
             android:contentDescription="@string/back_btn"
             android:backgroundTint="@color/transparent"

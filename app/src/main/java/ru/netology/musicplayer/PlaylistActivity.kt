@@ -13,5 +13,9 @@ class PlaylistActivity : AppCompatActivity() {
         setTheme(R.style.coolPick)
         binding = ActivityPlaylistBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //кнопка назад
+        binding.backBtnPLA.setOnClickListener{
+            finish()
+        }
     }
 }

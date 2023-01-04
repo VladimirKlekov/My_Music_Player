@@ -9,10 +9,25 @@
     tools:openDrawer="start"
     tools:context=".MainActivity">
 
+
+    <ImageButton
+        android:id="@+id/backBtnSA"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_40dp"
+        android:src="@drawable/back_icon"
+        android:contentDescription="@string/back_btn"
+        android:backgroundTint="@color/transparent"
+        app:tint="@color/cool_pink"
+        android:padding ="5dp"/>
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+
 
         <!--    для кнопок   -->
         <LinearLayout

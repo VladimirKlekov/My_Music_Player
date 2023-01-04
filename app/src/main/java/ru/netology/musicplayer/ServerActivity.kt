@@ -50,6 +50,10 @@ class ServerActivity : AppCompatActivity() {
         json()
         dataRecyclerView()
        binding.musicRVServer.setRecyclerListener { request }
+        //кнопка назад
+        binding.backBtnSA.setOnClickListener{
+            finish()
+        }
 
     }
 

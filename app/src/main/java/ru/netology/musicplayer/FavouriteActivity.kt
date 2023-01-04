@@ -13,5 +13,9 @@ class FavouriteActivity : AppCompatActivity() {
         setTheme(R.style.coolPick)
         binding = ActivityFavouriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //кнопка назад
+        binding.backBtnFA.setOnClickListener{
+            finish()
+        }
     }
 }

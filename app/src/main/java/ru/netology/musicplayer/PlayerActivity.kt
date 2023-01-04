@@ -67,6 +67,13 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 playMusic()
             }
         }
+
+        /** кнопка возврат*/
+        //https://developer.alexanderklimov.ru/android/theory/activity_methods.php
+        binding.backBtnPA.setOnClickListener {
+            //C помощью метода finish() можно завершить работу активности.
+            finish()
+        }
         /**seekBar*/
         //https://developer.android.com/reference/android/widget/SeekBar
         binding.seekBarPA.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
@@ -217,5 +224,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             return
         }
     }
+
 
 }
