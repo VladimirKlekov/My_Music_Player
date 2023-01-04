@@ -24,4 +24,8 @@
     <string name="exit">Exit</string>
     <string name="song_album">Song album</string>
     <string name="cloud">Cloud</string>
+    <string name="question_close_app">Do you want to close app?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>
