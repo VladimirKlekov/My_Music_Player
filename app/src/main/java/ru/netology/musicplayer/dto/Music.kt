@@ -14,7 +14,7 @@ data class Music(
     val artUri: String// Glide загрузка изображений иконки
 )
 
-/**для продолжительности. Нужно форматирование. Иначе отобр куча цифр*/
+/**для продолжительности. Нужно форматирование. Иначе отображается куча цифр*/
 fun formatDuration(duration: Long): String {
     val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
     val seconds =
@@ -33,14 +33,17 @@ fun getImgArt(path: String): ByteArray? {
 }
 //TODO
 fun setSongPosition(increment:Boolean){
-    if(increment){
-        if(PlayerActivity.musicListPA.size -1 == PlayerActivity.songPosition) {
-            PlayerActivity.songPosition = 0
-        }else ++PlayerActivity.songPosition
-    } else {
-        if(0 == PlayerActivity.songPosition) {
-            PlayerActivity.songPosition = PlayerActivity.musicListPA.size - 1
-        }else --PlayerActivity.songPosition
+    if(!PlayerActivity.repeat)//для повторения песни
+    {
+        if (increment) {
+            if (PlayerActivity.musicListPA.size - 1 == PlayerActivity.songPosition) {
+                PlayerActivity.songPosition = 0
+            } else ++PlayerActivity.songPosition
+        } else {
+            if (0 == PlayerActivity.songPosition) {
+                PlayerActivity.songPosition = PlayerActivity.musicListPA.size - 1
+            } else --PlayerActivity.songPosition
+        }
     }
 }
 //Класс MediaMetadataRetriever предоставляет унифицированный интерфейс для извлечения кадров и
