@@ -28,4 +28,5 @@
     <string name="question_close_app">Вы хотите закрыть приложение?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="equalizer_not_supported">Эквалайзер не поддерживается</string>
 </resources>

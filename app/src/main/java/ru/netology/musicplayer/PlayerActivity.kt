@@ -1,13 +1,16 @@
 package ru.netology.musicplayer
 
 import android.annotation.SuppressLint
+import android.app.Instrumentation
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.media.MediaPlayer
+import android.media.audiofx.AudioEffect
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -94,6 +97,19 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }else{
                 repeat = false
                 binding.repeatBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.cool_pink))
+            }
+        }
+        /** эквалайзер*/
+        //https://developer.android.com/reference/kotlin/android/media/audiofx/AudioEffect
+        binding.equalizerBtnPA.setOnClickListener{
+            try {
+                val EqIntent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
+                EqIntent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, musicService!!.mediaPlayer!!.audioSessionId)
+                EqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, baseContext.packageName)
+                EqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
+                startActivityForResult(EqIntent,13)
+            }catch (e:Exception){
+                Toast.makeText(this, R.string.equalizer_not_supported, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -225,5 +241,14 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         }
     }
 
-
+    /**для эквалайзера*/
+        //Если использую метод startActivityForResult(), то необходимо переопределить в коде метод для
+    // приёма результата onActivityResult() и обработать полученный результат
+    @Deprecated("Deprecated in Java")//анотация, если версия устарела
+    override fun onActivityResult(requestCode:Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 13 || resultCode == RESULT_OK){
+            return
+        }
+    }
 }

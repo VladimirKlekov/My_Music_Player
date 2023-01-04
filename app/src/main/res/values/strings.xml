@@ -27,5 +27,6 @@
     <string name="question_close_app">Do you want to close app?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="equalizer_not_supported">Equalizer not supported</string>
 
 </resources>
