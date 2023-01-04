@@ -17,7 +17,7 @@ import ru.netology.musicplayer.dto.formatDuration
 import ru.netology.musicplayer.dto.setSongPosition
 import ru.netology.musicplayer.service.MusicService
 
-class PlayerActivity : AppCompatActivity(), ServiceConnection {
+class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionListener {
 
     /**перечень Music*/
     companion object {
@@ -130,6 +130,9 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
             binding.tvSeekBarEnd.text = formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
             binding.seekBarPA.progress = 0
             binding.seekBarPA.max = musicService!!.mediaPlayer!!.duration
+            //продолжение воспроизведения после окончания песни
+            musicService!!.mediaPlayer!!.setOnCompletionListener (this)
+
         }catch (e:Exception){
             return
         }
@@ -181,6 +184,20 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection {
 
     override fun onServiceDisconnected(name: ComponentName?) {
         musicService = null
+    }
+
+    /**продолжение воспроизведения после окончания песни*/
+    //https://developer.android.com/reference/kotlin/android/media/MediaPlayer
+    override fun onCompletion(mp: MediaPlayer?) {
+        setSongPosition(increment = true)
+        createMediaPlayer()
+        try {
+            setLayout()
+        } catch (
+            e:Exception
+        ){
+            return
+        }
     }
 
 }
