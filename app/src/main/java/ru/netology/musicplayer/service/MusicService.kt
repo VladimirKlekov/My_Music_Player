@@ -6,7 +6,9 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import ru.netology.musicplayer.PlayerActivity
@@ -22,7 +24,8 @@ class MusicService : Service() {
 
     //Для меню-увед с кнопкамию Получаю элементы управления транспортом, мультимедийные кнопки и команды от контроллеров и системы
     private lateinit var mediaSession: MediaSessionCompat
-
+    //
+    private lateinit var runnable: Runnable
 
     override fun onBind(intent: Intent?): IBinder {
         mediaSession = MediaSessionCompat(baseContext, "My music")
@@ -94,13 +97,21 @@ class MusicService : Service() {
             PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
             //уведомления
             PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon)
-            PlayerActivity.binding.tvSeekBarStart.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.currentPosition.toLong())
-            PlayerActivity.binding.tvSeekBarEnd.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
+            PlayerActivity.binding.tvSeekBarStart.text = formatDuration(mediaPlayer!!.currentPosition.toLong())
+            PlayerActivity.binding.tvSeekBarEnd.text = formatDuration(mediaPlayer!!.duration.toLong())
             PlayerActivity.binding.seekBarPA.progress = 0
-            PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
+            PlayerActivity.binding.seekBarPA.max = mediaPlayer!!.duration
         } catch (e: Exception) {
             return
         }
     }
-
+    //runnable https://tedblob.com/android-kotlin-handler-and-runnable-examples/
+    fun seekBarSetup(){
+           runnable = Runnable {
+               PlayerActivity.binding.tvSeekBarStart.text = formatDuration(mediaPlayer!!.currentPosition.toLong())
+               PlayerActivity.binding.seekBarPA.progress = mediaPlayer!!.currentPosition
+               Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+}
+        Handler(Looper.getMainLooper()).postDelayed(runnable,0)
+    }
 }
