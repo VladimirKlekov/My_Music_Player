@@ -13,6 +13,7 @@ import ru.netology.musicplayer.PlayerActivity
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.application.ApplicationClass
 import ru.netology.musicplayer.application.NotificationReceiver
+import ru.netology.musicplayer.dto.formatDuration
 import ru.netology.musicplayer.dto.getImgArt
 
 class MusicService : Service() {
@@ -21,6 +22,7 @@ class MusicService : Service() {
 
     //Для меню-увед с кнопкамию Получаю элементы управления транспортом, мультимедийные кнопки и команды от контроллеров и системы
     private lateinit var mediaSession: MediaSessionCompat
+
 
     override fun onBind(intent: Intent?): IBinder {
         mediaSession = MediaSessionCompat(baseContext, "My music")
@@ -92,8 +94,13 @@ class MusicService : Service() {
             PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
             //уведомления
             PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon)
+            PlayerActivity.binding.tvSeekBarStart.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.currentPosition.toLong())
+            PlayerActivity.binding.tvSeekBarEnd.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
+            PlayerActivity.binding.seekBarPA.progress = 0
+            PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
         } catch (e: Exception) {
             return
         }
     }
+
 }
