@@ -20,6 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityMainBinding
 import ru.netology.musicplayer.dto.Music
+import ru.netology.musicplayer.dto.exitApplication
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -91,13 +92,7 @@ class MainActivity : AppCompatActivity(){
                     builder.setTitle(R.string.exit)
                         .setMessage(R.string.question_close_app)
                         .setPositiveButton(R.string.yes){ _, _->
-                            //добавил условие. иначе глючит при выходе
-                            if (PlayerActivity.musicService != null) {
-                                PlayerActivity.musicService!!.stopForeground(true)
-                                PlayerActivity.musicService!!.mediaPlayer!!.release()
-                                PlayerActivity.musicService = null
-                            }
-                            exitProcess(1)
+                            exitApplication()
                         }
                         .setNegativeButton(R.string.no){dialog, _ ->
                             dialog.dismiss()
@@ -245,10 +240,7 @@ class MainActivity : AppCompatActivity(){
     override fun onDestroy() {
         super.onDestroy()
         if (!PlayerActivity.isPlaying && PlayerActivity.musicService != null){
-            PlayerActivity.musicService!!.stopForeground(true)
-            PlayerActivity.musicService!!.mediaPlayer!!.release()
-            PlayerActivity.musicService = null
-            exitProcess(1)
+            exitApplication()
         }
     }
    }

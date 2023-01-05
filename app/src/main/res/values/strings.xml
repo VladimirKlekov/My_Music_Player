@@ -34,5 +34,7 @@
     <string name="timer_stop_15">Music playback will be stopped after 15 minutes</string>
     <string name="timer_stop_30">Music playback will be stopped after 30 minutes</string>
     <string name="timer_stop_60">Music playback will be stopped after 60 minutes</string>
+    <string name="timer_stop">Stop timer</string>
+    <string name="question_stop_timer">Do you want to stop timer?</string>
 
 </resources>

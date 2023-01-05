@@ -3,6 +3,7 @@ package ru.netology.musicplayer.dto
 import android.media.MediaMetadataRetriever
 import ru.netology.musicplayer.PlayerActivity
 import java.util.concurrent.TimeUnit
+import kotlin.system.exitProcess
 
 data class Music(
     val id: String,
@@ -44,6 +45,18 @@ fun setSongPosition(increment:Boolean){
                 PlayerActivity.songPosition = PlayerActivity.musicListPA.size - 1
             } else --PlayerActivity.songPosition
         }
+    }
+
+}
+
+/**сделал отдельную функцию для выхода из приложения*/
+fun exitApplication(){
+    //добавил условие. иначе глючит при выходе
+    if (PlayerActivity.musicService != null) {
+        PlayerActivity.musicService!!.stopForeground(true)
+        PlayerActivity.musicService!!.mediaPlayer!!.release()
+        PlayerActivity.musicService = null
+        exitProcess(1)
     }
 }
 //Класс MediaMetadataRetriever предоставляет унифицированный интерфейс для извлечения кадров и

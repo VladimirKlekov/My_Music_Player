@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.PlayerActivity
 import ru.netology.musicplayer.R
+import ru.netology.musicplayer.dto.exitApplication
 import ru.netology.musicplayer.dto.setSongPosition
 import kotlin.system.exitProcess
 
@@ -32,11 +33,7 @@ class NotificationReceiver: BroadcastReceiver() {
             ApplicationClass.NEXT ->  prevNextSong(increment = true, context = context!!)
             //ApplicationClass.EXIT -> exitProcess(1)
             ApplicationClass.EXIT ->{
-                PlayerActivity.musicService!!.stopForeground(true)
-                //кнопка возврат
-                PlayerActivity.musicService!!.mediaPlayer!!.release()
-                PlayerActivity.musicService = null
-                exitProcess(1)
+               exitApplication()
             }
         }
     }

@@ -35,4 +35,6 @@
     <string name="timer_stop_15">Воспроизведение музыки будет остановлено через 15 минут</string>
     <string name="timer_stop_60">Воспроизведение музыки будет остановлено через 60 минут</string>
     <string name="timer_stop_30">Воспроизведение музыки будет остановлено через 30  минут</string>
+    <string name="timer_stop">Выключить таймер</string>
+    <string name="question_stop_timer">Выключить таймер?</string>
 </resources>

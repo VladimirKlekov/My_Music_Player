@@ -1,10 +1,10 @@
 package ru.netology.musicplayer
 
 import android.annotation.SuppressLint
-import android.app.Instrumentation
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
 import android.os.Bundle
@@ -12,13 +12,16 @@ import android.os.IBinder
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.netology.musicplayer.databinding.ActivityPlayerBinding
 import ru.netology.musicplayer.dto.Music
+import ru.netology.musicplayer.dto.exitApplication
 import ru.netology.musicplayer.dto.formatDuration
 import ru.netology.musicplayer.dto.setSongPosition
 import ru.netology.musicplayer.service.MusicService
@@ -42,6 +45,10 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         lateinit var binding: ActivityPlayerBinding
         //повторение песни
         var repeat:Boolean = false
+        //таймер
+        var min15: Boolean = false
+        var min30: Boolean = false
+        var min60: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,7 +123,32 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         }
         /** таймер*/
         binding.timerBtnPA.setOnClickListener{
-            showBottomSheetDialog()
+            val timer = min15 || min30 || min60
+            if(!timer) {
+                showBottomSheetDialog()
+            }else {
+                //вариант с уведомлением(запросом) пользователя
+                //Кроме стандартного диалогового окна AlertDialog можно использовать диалоговое
+                // окно в стиле Material Design с помощью класса MaterialAlertDialogBuilder.
+                val builder = MaterialAlertDialogBuilder(this)
+                builder.setTitle(R.string.timer_stop)
+                    .setMessage(R.string.question_stop_timer)
+                    .setPositiveButton(R.string.yes){ _, _->
+                        min15 = false
+                        min30 = false
+                        min60 = false
+                        binding.timerBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.cool_pink))
+                    }
+                    .setNegativeButton(R.string.no){dialog, _ ->
+                        dialog.dismiss()
+                    }
+                val customDialog = builder.create()
+                //показать
+                customDialog.show()
+                //Появляются кнопки в всплывающем меню: да и нет
+                customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+                customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED)
+            }
         }
 
     }
@@ -156,6 +188,10 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         //повторение песни
         if (repeat){
             binding.repeatBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
+        }
+        //смена цвета кнопки таймер
+        if(min15 || min30 || min60 == true) {
+            binding.timerBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
         }
     }
 
@@ -266,16 +302,43 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         dialog.setContentView(R.layout.bottom_sheet_dialog)
         dialog.show()
         dialog.findViewById<LinearLayout>(R.id.min_15)?.setOnClickListener{
+            //отправить сообщение
             Toast.makeText(baseContext, R.string.timer_stop_15, Toast.LENGTH_SHORT).show()
-            dialog.dismiss()//когда задача активна, нукжно закрыть диалоговое окно
+            //смена цвета кнопки
+            binding.timerBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
+            min15 = true
+            Thread{
+                Thread.sleep(15 * 60000)
+                if(min15 == true){
+                exitApplication()
+                }
+            }.start()
+            //когда задача активна, нукжно закрыть диалоговое окно
+            dialog.dismiss()
         }
         dialog.findViewById<LinearLayout>(R.id.min_30)?.setOnClickListener{
             Toast.makeText(baseContext, R.string.timer_stop_30, Toast.LENGTH_SHORT).show()
-            dialog.dismiss()//когда задача активна, нукжно закрыть диалоговое окно
+            binding.timerBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
+            min30 = true
+            Thread{
+                Thread.sleep(30 * 60000)
+                if(min30 == true){
+                    exitApplication()
+                }
+            }.start()
+            dialog.dismiss()
         }
         dialog.findViewById<LinearLayout>(R.id.min_60)?.setOnClickListener{
             Toast.makeText(baseContext, R.string.timer_stop_60, Toast.LENGTH_SHORT).show()
-            dialog.dismiss()//когда задача активна, нукжно закрыть диалоговое окно
+            binding.timerBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
+            min60 = true
+            Thread{
+                Thread.sleep(60 * 60000)
+                if(min60 == true){
+                    exitApplication()
+                }
+            }.start()
+            dialog.dismiss()
         }
     }
 }
