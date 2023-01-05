@@ -28,5 +28,11 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="equalizer_not_supported">Equalizer not supported</string>
+    <string name="min_15">15 Minutes</string>
+    <string name="min_30">30 Minutes</string>
+    <string name="min_60">60 Minutes</string>
+    <string name="timer_stop_15">Music playback will be stopped after 15 minutes</string>
+    <string name="timer_stop_30">Music playback will be stopped after 30 minutes</string>
+    <string name="timer_stop_60">Music playback will be stopped after 60 minutes</string>
 
 </resources>

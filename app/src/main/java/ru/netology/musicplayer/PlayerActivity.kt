@@ -9,12 +9,14 @@ import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import ru.netology.musicplayer.databinding.ActivityPlayerBinding
 import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.formatDuration
@@ -103,15 +105,20 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         //https://developer.android.com/reference/kotlin/android/media/audiofx/AudioEffect
         binding.equalizerBtnPA.setOnClickListener{
             try {
-                val EqIntent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
-                EqIntent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, musicService!!.mediaPlayer!!.audioSessionId)
-                EqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, baseContext.packageName)
-                EqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
-                startActivityForResult(EqIntent,13)
+                val eqIntent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
+                eqIntent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, musicService!!.mediaPlayer!!.audioSessionId)
+                eqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, baseContext.packageName)
+                eqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
+                startActivityForResult(eqIntent,13)
             }catch (e:Exception){
                 Toast.makeText(this, R.string.equalizer_not_supported, Toast.LENGTH_SHORT).show()
             }
         }
+        /** таймер*/
+        binding.timerBtnPA.setOnClickListener{
+            showBottomSheetDialog()
+        }
+
     }
     /**для override fun onCreate(savedInstanceState: Bundle?) вынес в функцию, что бы не мешало */
     fun initializeLayout(){
@@ -251,4 +258,30 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             return
         }
     }
+
+    /**для таймера - отображения списка минут*/
+    //https://developer.alexanderklimov.ru/android/dialogfragment_alertdialog.php
+    private fun showBottomSheetDialog(){
+        val dialog = BottomSheetDialog(this@PlayerActivity)
+        dialog.setContentView(R.layout.bottom_sheet_dialog)
+        dialog.show()
+        dialog.findViewById<LinearLayout>(R.id.min_15)?.setOnClickListener{
+            Toast.makeText(baseContext, R.string.timer_stop_15, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()//когда задача активна, нукжно закрыть диалоговое окно
+        }
+        dialog.findViewById<LinearLayout>(R.id.min_30)?.setOnClickListener{
+            Toast.makeText(baseContext, R.string.timer_stop_30, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()//когда задача активна, нукжно закрыть диалоговое окно
+        }
+        dialog.findViewById<LinearLayout>(R.id.min_60)?.setOnClickListener{
+            Toast.makeText(baseContext, R.string.timer_stop_60, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()//когда задача активна, нукжно закрыть диалоговое окно
+        }
+    }
 }
+
+//Для создания всплывающего уведомления необходимо инициализировать объект Toast при помощи метода
+//Toast.makeText(), а затем вызвать метод show() для отображения сообщения на экране
+//LENGTH_SHORT — (По умолчанию) показывает текстовое уведомление на короткий промежуток времени;
+//LENGTH_LONG — показывает текстовое уведомление в течение длительного периода времени.
+//https://developer.alexanderklimov.ru/android/toast.php
