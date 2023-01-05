@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
+import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.LinearLayout
@@ -149,6 +150,30 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
                 customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED)
             }
+        }
+        /** share отправка других данных в другие приложения*/
+        //https://developer.android.com/training/sharing/send
+        binding.shareBtnPA.setOnClickListener{
+//            val sendIntent: Intent = Intent().apply {
+//                action = Intent.ACTION_SEND
+//                putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+//                type = "text/plain"
+//            }
+//            val shareIntent = Intent.createChooser(sendIntent, null)
+//            startActivity(shareIntent)
+//            /**************************************************************************************/
+//            val shareIntent2: Intent = Intent().apply {
+//                action = Intent.ACTION_SEND
+//                putExtra(Intent.EXTRA_STREAM, Uri.parse(musicListPA[songPosition].path))
+//                type = "audio/*"
+//            }
+//            startActivity(Intent.createChooser(shareIntent2, null))
+            /**************************************************************************************/
+            val shareIntent3 = Intent()
+            shareIntent3.action = Intent.ACTION_SEND
+            shareIntent3.type = "audio/*"
+            shareIntent3.putExtra(Intent.EXTRA_STREAM, Uri.parse(musicListPA[songPosition].path))
+            startActivity(Intent.createChooser(shareIntent3, "Sharing Music File!!"))
         }
 
     }
