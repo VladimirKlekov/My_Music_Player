@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,7 +24,6 @@ import ru.netology.musicplayer.databinding.ActivityMainBinding
 import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.exitApplication
 import java.io.File
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(){
 
@@ -243,6 +244,26 @@ class MainActivity : AppCompatActivity(){
             exitApplication()
         }
     }
+
+    /**Поиск*/
+    //https://developer.alexanderklimov.ru/android/theory/menu.php
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_view_menu, menu)
+        // импортировал as import androidx.appcompat.widget.SearchView
+        val searchView = menu?.findItem(R.id.searchView)?.actionView as SearchView
+        //объект прослушивателя, который получает обратные вызовы, когда пользователь выполняет
+        // действия в SearchView, такие как нажатие на кнопки или ввод запроса.
+        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean = true
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Toast.makeText(this@MainActivity, newText.toString(), Toast.LENGTH_SHORT).show()
+                return true
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
+    }
+
    }
 
 

@@ -37,5 +37,6 @@
     <string name="timer_stop">Stop timer</string>
     <string name="question_stop_timer">Do you want to stop timer?</string>
     <string name="sharing_music_file">Sharing Music File</string>
+    <string name="search_view">Search view</string>
 
 </resources>

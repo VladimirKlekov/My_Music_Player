@@ -161,13 +161,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 //            }
 //            val shareIntent = Intent.createChooser(sendIntent, null)
 //            startActivity(shareIntent)
-//            /**************************************************************************************/
-//            val shareIntent2: Intent = Intent().apply {
-//                action = Intent.ACTION_SEND
-//                putExtra(Intent.EXTRA_STREAM, Uri.parse(musicListPA[songPosition].path))
-//                type = "audio/*"
-//            }
-//            startActivity(Intent.createChooser(shareIntent2, null))
+//
             /**************************************************************************************/
             val shareIntent3 = Intent()
             shareIntent3.action = Intent.ACTION_SEND
