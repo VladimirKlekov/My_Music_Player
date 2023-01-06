@@ -34,6 +34,9 @@ class MainActivity : AppCompatActivity(){
     /**перечень Music*/
     companion object {
         lateinit var MusicListMA: ArrayList<Music>
+        //поиск музыки
+        lateinit var musicListSearch: ArrayList<Music>
+        var search: Boolean = false
            }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -166,8 +169,9 @@ class MainActivity : AppCompatActivity(){
     @SuppressLint("SetTextI18n")//подавление количество песен (список)
     private fun initializeLayout() {
         /**для recyclerview в activity_main*/
-        val musicList = ArrayList<String>()//список музыки
+        search = false
         MusicListMA = getAllAudio()
+//        val musicList = ArrayList<String>()//список музыки
 //        musicList.add("1 Song")//заменил на MusicListMA= getAllAudio()
 //        musicList.add("2 Song")
 //        musicList.add("3 Song")
@@ -253,11 +257,19 @@ class MainActivity : AppCompatActivity(){
         val searchView = menu?.findItem(R.id.searchView)?.actionView as SearchView
         //объект прослушивателя, который получает обратные вызовы, когда пользователь выполняет
         // действия в SearchView, такие как нажатие на кнопки или ввод запроса.
-        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean = true
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Toast.makeText(this@MainActivity, newText.toString(), Toast.LENGTH_SHORT).show()
+                musicListSearch = ArrayList()
+                if(newText != null){
+                    val userInput = newText.lowercase()
+                    for (song in MusicListMA)
+                        if(song.title.lowercase().contains(userInput))
+                            musicListSearch.add(song)
+                    search = true
+                    musicAdapter.updateMusicList(searchList = musicListSearch)
+                }
                 return true
             }
         })

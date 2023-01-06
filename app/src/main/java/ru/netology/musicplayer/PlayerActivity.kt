@@ -176,6 +176,11 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         //получаю данные из class MusicAdapter
         songPosition = intent.getIntExtra("index", 0)
         when(intent.getStringExtra("class")){
+            "MusicAdapterSearch"->{
+                musicListPA = ArrayList()
+                musicListPA.addAll(MainActivity.musicListSearch)
+                setLayout()
+            }
             "MusicAdapter"->{
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.MusicListMA)

@@ -8,13 +8,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import ru.netology.musicplayer.MainActivity
 import ru.netology.musicplayer.PlayerActivity
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.databinding.MusicViewBinding
 import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.formatDuration
 
-class MusicAdapter(private val context: Context, private val musicList: ArrayList<Music>) :
+class MusicAdapter(private val context: Context, private var musicList: ArrayList<Music>) :
     RecyclerView.Adapter<MusicAdapter.MyHolder>() {
     /** для управления music_view */
     class MyHolder(binding: MusicViewBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -43,17 +44,33 @@ class MusicAdapter(private val context: Context, private val musicList: ArrayLis
                 .into(holder.image)
         //продолж
         holder.root.setOnClickListener {
-            val intent = Intent(context, PlayerActivity::class.java)
-        //для class PlayerActivity
-            intent.putExtra("index", position)
-            intent.putExtra("class","MusicAdapter")
-            //________
-            ContextCompat.startActivity(context, intent, null)
+            when{
+                MainActivity.search ->sendIntent(ref = "MusicAdapterSearch", pos = position)
+            else -> sendIntent(ref = "MusicAdapter", pos = position)
+        }
         }
         }
 
     override fun getItemCount(): Int {
         return musicList.size
     }
+
+    /** для поиска */
+    fun updateMusicList(searchList : ArrayList<Music>){
+        musicList = ArrayList()
+        musicList.addAll(searchList)
+        notifyDataSetChanged()
+    }
+
+    //продолжение. вынес в отдельную функцию
+    private fun sendIntent(ref : String, pos: Int){
+        val intent = Intent(context, PlayerActivity::class.java)
+        //для class PlayerActivity
+        intent.putExtra("index", pos)
+        intent.putExtra("class",ref)
+        //________
+        ContextCompat.startActivity(context, intent, null)
+    }
+
 
 }
