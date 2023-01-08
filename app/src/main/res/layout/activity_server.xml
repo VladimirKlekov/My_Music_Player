@@ -1,67 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    tools:context=".MainActivity">
-
-
-    <ImageButton
-        android:id="@+id/backBtnSA"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/padding_40dp"
-        android:src="@drawable/back_icon"
-        android:contentDescription="@string/back_btn"
-        android:backgroundTint="@color/transparent"
-        app:tint="@color/cool_pink"
-        android:padding ="5dp"/>
-
-
+    tools:context=".MainActivity"
+    tools:openDrawer="start">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-
-        <!--    для кнопок   -->
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/cool_pink">
+
+            <ImageButton
+                android:id="@+id/backBtnSA"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_40dp"
+                android:backgroundTint="@color/transparent"
+                android:contentDescription="@string/back_btn"
+                android:padding="5dp"
+                android:src="@drawable/back_icon"
+                app:tint="@color/white" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/favourites_btn"
+                android:text="@string/music_server"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:orientation="horizontal"
             android:layout_margin="@dimen/padding_10dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_weight="1">
+            android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/previousBtnServer"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:icon="@drawable/previous_icon"
-                app:iconSize = "@dimen/padding_40dp"/>
+                app:iconSize="@dimen/padding_40dp" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/playPauseBtnServer"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:icon="@drawable/pause_icon"
-                app:iconSize = "@dimen/padding_50dp"
                 android:layout_marginHorizontal="@dimen/padding_25dp"
-                app:shapeAppearanceOverlay="@style/curved"
                 app:backgroundTint="@android:color/holo_red_light"
-                app:iconTint="@color/white"/>
+                app:icon="@drawable/pause_icon"
+                app:iconSize="@dimen/padding_50dp"
+                app:iconTint="@color/white"
+                app:shapeAppearanceOverlay="@style/curved" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/nextBtnServer"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:icon="@drawable/next_icon"
-                app:iconSize = "@dimen/padding_40dp"/>
+                app:iconSize="@dimen/padding_40dp" />
 
         </LinearLayout>
 
@@ -69,8 +79,12 @@
             android:id="@+id/musicRVServer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollbarThumbVertical="@drawable/scroll_bar_icon"
             android:scrollbars="vertical"
-            android:scrollbarThumbVertical="@drawable/scroll_bar_icon" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            />
 
     </LinearLayout>
 </LinearLayout>

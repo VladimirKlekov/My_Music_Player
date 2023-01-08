@@ -39,4 +39,5 @@
     <string name="question_stop_timer">Выключить таймер?</string>
     <string name="sharing_music_file">Поделиться музыкальным файлом</string>
     <string name="search_view">Просмотр поиска</string>
+    <string name="music_server">Музыка с сервера</string>
 </resources>

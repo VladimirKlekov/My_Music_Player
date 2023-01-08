@@ -8,17 +8,18 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/songImgFV"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="80dp"
+        android:layout_height="75dp"
         app:shapeAppearanceOverlay="@style/curved"
-        android:contentDesription="@string/song_name"
-        android:src="@drawable/music_player_icon_slash_screen"/>
+        android:contentDescription="@string/song_name"
+        android:src="@drawable/music_player_icon_slash_screen"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/songNameFV"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:maxLines="2"
-        android:textColor="black"
+        android:textColor="@color/black"
         android:text="@string/song_name"/>
 </LinearLayout>
