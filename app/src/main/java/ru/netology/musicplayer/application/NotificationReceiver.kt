@@ -10,6 +10,7 @@ import ru.netology.musicplayer.NowPlaying
 import ru.netology.musicplayer.PlayerActivity
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.dto.exitApplication
+import ru.netology.musicplayer.dto.favouriteChecker
 import ru.netology.musicplayer.dto.setSongPosition
 import kotlin.system.exitProcess
 
@@ -73,6 +74,14 @@ class NotificationReceiver: BroadcastReceiver() {
         NowPlaying.binding.songNameNP.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
         //воспроизвести
         playMusic()
+        //для добавления в favourite
+        PlayerActivity.fIndex = favouriteChecker(PlayerActivity.musicListPA[PlayerActivity.songPosition].id)
+        if(PlayerActivity.isFavourite == true) {
+            PlayerActivity.binding.favouritesBtnPA.setImageResource(R.drawable.favorite_icon)
+        }else {
+            PlayerActivity.binding.favouritesBtnPA.setImageResource(R.drawable.favorite_empty_icon)
+        }
+
     }
 }
 

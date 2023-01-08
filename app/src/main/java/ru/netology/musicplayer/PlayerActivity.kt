@@ -197,6 +197,15 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         //получаю данные из class MusicAdapter
         songPosition = intent.getIntExtra("index", 0)
         when(intent.getStringExtra("class")){
+            "FavouriteAdapter"->{
+                //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
+                val intent = Intent(this, MusicService::class.java)
+                bindService(intent, this, BIND_AUTO_CREATE)
+                startService(intent)
+                musicListPA = ArrayList()
+                musicListPA.addAll(FavouriteActivity.favouriteSong)
+                setLayout()
+            }
             "NowPlaying" ->{
                 setLayout()
                 binding.tvSeekBarStart.text = formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())

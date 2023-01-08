@@ -39,12 +39,16 @@ class ServerActivity : AppCompatActivity() {
         .build()
     val gson = Gson()
 
+
+
     /*********************************************************************************************/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityServerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
         //для recyclerview
         val tempList = ArrayList<String>()
         tempList.add("Song 1")

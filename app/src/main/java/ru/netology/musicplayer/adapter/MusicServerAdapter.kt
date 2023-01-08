@@ -11,7 +11,7 @@ import ru.netology.musicplayer.R
 import ru.netology.musicplayer.databinding.MusicServerViewBinding
 import ru.netology.musicplayer.dto.Track
 
-class MusicServerAdapter(private val context: Context, private val musicListServer: ArrayList<String>) :
+class MusicServerAdapter(private val context: Context, val musicListServer: ArrayList<String>) :
     RecyclerView.Adapter<MusicServerAdapter.MyServerHolder>() {
 
     /** для управления music_view */
