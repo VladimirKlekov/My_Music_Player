@@ -19,6 +19,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import ru.netology.musicplayer.MainActivity.Companion.MusicListMA
+import ru.netology.musicplayer.MainActivity.Companion.musicListSearch
+import ru.netology.musicplayer.MainActivity.Companion.search
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityMainBinding
 import ru.netology.musicplayer.dto.Music
@@ -53,8 +58,19 @@ class MainActivity : AppCompatActivity(){
         binding.root.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        if(requestRuntimePermission())
-        initializeLayout()
+        if(requestRuntimePermission()) {
+            initializeLayout()
+            //json для получения списка любимых песен
+            FavouriteActivity.favouriteSong = ArrayList()
+            val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE)
+            val jsonString = editor.getString("FavouriteSongs", null)
+            val typeToken = object : TypeToken<ArrayList<Music>>(){}.type
+            if(jsonString != null){
+                val data: ArrayList<Music> = GsonBuilder().create().fromJson(jsonString, typeToken)
+                FavouriteActivity.favouriteSong.addAll(data)
+            }
+
+        }
 
         /**кнопки*/
         binding.shuffleBtn.setOnClickListener {
@@ -249,6 +265,16 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        /**json сохранение списка любимых песен*/
+        val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE).edit()
+        val jsonString = GsonBuilder().create().toJson(FavouriteActivity.favouriteSong)
+        editor.putString("FavouriteSongs", jsonString)
+        editor.apply()
+    }
+
     /**Поиск*/
     //https://developer.alexanderklimov.ru/android/theory/menu.php
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -276,7 +302,7 @@ class MainActivity : AppCompatActivity(){
         return super.onCreateOptionsMenu(menu)
     }
 
-   }
+     }
 
 
 

@@ -3,20 +3,24 @@ package ru.netology.musicplayer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
 import ru.netology.musicplayer.adapter.FavouriteAdapter
 import ru.netology.musicplayer.dto.MusicJson
 import ru.netology.musicplayer.adapter.MusicServerAdapter
 import ru.netology.musicplayer.databinding.ActivityFavouriteBinding
 import ru.netology.musicplayer.dto.Track
 import ru.netology.musicplayer.databinding.ActivityServerBinding
+import ru.netology.musicplayer.dto.Music
+import java.io.FileReader
 import java.io.IOException
+import java.net.URL
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
@@ -25,6 +29,13 @@ class ServerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityServerBinding
     private lateinit var musicServerAdapter: MusicServerAdapter
     private lateinit var request: Request
+    private lateinit var musicJson: MusicJson
+    //var serverSong: ArrayList<MusicJson> = ArrayList()
+    val URL = "https://github.com/netology-code/andad-homeworks/raw/master/09_multimedia/data/album.json"
+
+    companion object {
+        var serverSong: ArrayList<MusicJson> = ArrayList()
+    }
 
     /*********************************************************************************************/
 
@@ -41,13 +52,16 @@ class ServerActivity : AppCompatActivity() {
 
 
 
+
     /*********************************************************************************************/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityServerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        json()
 
+            val x = binding.musicRVServer.setRecyclerListener{request}.toString()
 
         //для recyclerview
         val tempList = ArrayList<String>()
@@ -59,7 +73,7 @@ class ServerActivity : AppCompatActivity() {
         tempList.add("Song 6")
         tempList.add("Song 7")
 
-        binding.musicRVServer.setRecyclerListener { request }
+
         //кнопка назад
         binding.backBtnSA.setOnClickListener {
             finish()
@@ -77,10 +91,10 @@ class ServerActivity : AppCompatActivity() {
 
     /**JSON*/
 
-    fun json() {
+    fun json(){
 
-        val musicListJson = object : TypeToken<List<MusicJson>>() {}
-        val musicTrack = object : TypeToken<List<Track>>() {}
+//        val musicListJson = object : TypeToken<List<MusicJson>>() {}
+//        val musicTrack = object : TypeToken<List<Track>>() {}
 
         thread {
             try {
@@ -96,10 +110,25 @@ class ServerActivity : AppCompatActivity() {
                     .let {
                         gson.fromJson(it, MusicJson::class.java)
                     }
+
             } catch (e: IOException) {
+
+            }
+
+
             }
 
         }
+
     }
 
-}
+
+
+
+
+
+
+
+
+
+

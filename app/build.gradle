@@ -72,7 +72,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     //для уведомлений
     implementation "androidx.media:media:$media_version"
-//для получения Json
+//для получения Json. Хранение данных из любимых песней + json сервера
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.google.code.gson:gson:$gson_version"
     //2
