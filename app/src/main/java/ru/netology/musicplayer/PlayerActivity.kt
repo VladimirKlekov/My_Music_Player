@@ -40,7 +40,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         var isPlaying: Boolean = false
         //сервис
         var musicService:MusicService? = null
-         //TODO Глюки или утечка памяти? добавил анотацию
+         //TODO Глюки - добавил анотацию
         //перенес в объект для доступа в NotificationReceiver
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
@@ -154,6 +154,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         /** share отправка других данных в другие приложения*/
         //https://developer.android.com/training/sharing/send
         binding.shareBtnPA.setOnClickListener{
+            /**варинт с сообщением*/
 //            val sendIntent: Intent = Intent().apply {
 //                action = Intent.ACTION_SEND
 //                putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
