@@ -64,6 +64,14 @@ class NotificationReceiver: BroadcastReceiver() {
             .apply(RequestOptions().placeholder(R.drawable.music_player_icon_slash_screen).centerCrop())
             .into(PlayerActivity.binding.songImgPA)
         PlayerActivity.binding.songNamePA.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+        //картинка для NowPlaying
+        Glide.with(context)
+            .load(PlayerActivity.musicListPA[PlayerActivity.songPosition].artUri)
+            .apply(RequestOptions().placeholder(R.drawable.music_player_icon_slash_screen).centerCrop())
+            .into(NowPlaying.binding.songImgNP)
+        //заголовок
+        NowPlaying.binding.songNameNP.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+        //воспроизвести
         playMusic()
     }
 }

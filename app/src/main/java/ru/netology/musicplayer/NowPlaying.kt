@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.databinding.FragmentNowPlayingBinding
+import ru.netology.musicplayer.dto.setSongPosition
 
 
 class NowPlaying : Fragment() {
@@ -32,6 +33,20 @@ companion object{
             } else {
                 playMusic()
             }
+        }
+        binding.nextBtnNP.setOnClickListener{
+            setSongPosition(increment = true)
+            PlayerActivity.musicService!!.createMediaPlayer()
+           //картинка для NowPlaying
+            Glide.with(this)
+                .load(PlayerActivity.musicListPA[PlayerActivity.songPosition].artUri)
+                .apply(RequestOptions().placeholder(R.drawable.music_player_icon_slash_screen).centerCrop())
+                .into(NowPlaying.binding.songImgNP)
+            //заголовок
+            binding.songNameNP.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+            PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon)
+            //воспроизвести
+            playMusic()
         }
         return view
     }
