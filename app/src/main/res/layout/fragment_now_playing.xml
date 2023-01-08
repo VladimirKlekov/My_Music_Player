@@ -53,6 +53,7 @@
         android:layout_toEndOf="@id/songImgNP"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        />
 
 </RelativeLayout>
