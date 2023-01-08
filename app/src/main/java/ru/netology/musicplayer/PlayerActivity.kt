@@ -57,10 +57,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         setTheme(R.style.coolPick)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
-        val intent = Intent(this, MusicService::class.java)
-        bindService(intent, this, BIND_AUTO_CREATE)
-        startService(intent)
 
         initializeLayout()
 
@@ -177,12 +173,27 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         //получаю данные из class MusicAdapter
         songPosition = intent.getIntExtra("index", 0)
         when(intent.getStringExtra("class")){
+            "NowPlaying" ->{
+                setLayout()
+                binding.tvSeekBarStart.text = formatDuration(musicService!!.mediaPlayer!!.currentPosition.toLong())
+                binding.tvSeekBarEnd.text = formatDuration(musicService!!.mediaPlayer!!.duration.toLong())
+                binding.seekBarPA.progress = musicService!!.mediaPlayer!!.currentPosition
+                binding.seekBarPA.max = musicService!!.mediaPlayer!!.duration
+            }
             "MusicAdapterSearch"->{
+                //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
+                val intent = Intent(this, MusicService::class.java)
+                bindService(intent, this, BIND_AUTO_CREATE)
+                startService(intent)
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListSearch)
                 setLayout()
             }
             "MusicAdapter"->{
+                //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
+                val intent = Intent(this, MusicService::class.java)
+                bindService(intent, this, BIND_AUTO_CREATE)
+                startService(intent)
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.MusicListMA)
                 //плэй-пауза
@@ -191,6 +202,10 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 //createMediaPlayer() - вынес в сервис
             }
             "MainActivity" ->{
+                //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
+                val intent = Intent(this, MusicService::class.java)
+                bindService(intent, this, BIND_AUTO_CREATE)
+                startService(intent)
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.MusicListMA)
                 //случайный порядок

@@ -1,11 +1,13 @@
 package ru.netology.musicplayer
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.databinding.FragmentNowPlayingBinding
@@ -51,6 +53,18 @@ class NowPlaying : Fragment() {
             //воспроизвести
             playMusic()
         }
+
+        //переход к текущей песне
+        binding.root.setOnClickListener{
+            //requireContext()- экземпляр контекста. возвращает ненулевое значение Context или выдает исключение, если оно недоступно.
+            //https://question-it.com/questions/3127142/raznitsa-mezhdu-getcontext-i-requirecontext-pri-ispolzovanii-fragmentov
+            val intent = Intent(requireContext(), PlayerActivity::class.java)
+            intent.putExtra("index", PlayerActivity.songPosition)
+            intent.putExtra("class", "NowPlaying")
+            //________
+            ContextCompat.startActivity(requireContext(), intent, null)
+        }
+
         return view
     }
 
