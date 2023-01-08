@@ -1,4 +1,4 @@
-package ru.netology.musicplayer.adapter
+package ru.netology.musicplayer.dto
 
 data class MusicJson(
     val id: Int,

@@ -21,5 +21,6 @@
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:textColor="@color/black"
-        android:text="@string/song_name"/>
+        android:text="@string/song_name"
+        android:gravity="center"/>
 </LinearLayout>

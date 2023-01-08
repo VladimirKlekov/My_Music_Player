@@ -20,11 +20,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import ru.netology.musicplayer.PlayerActivity.Companion.isPlaying
+import ru.netology.musicplayer.PlayerActivity.Companion.min15
+import ru.netology.musicplayer.PlayerActivity.Companion.min30
+import ru.netology.musicplayer.PlayerActivity.Companion.min60
+import ru.netology.musicplayer.PlayerActivity.Companion.musicListPA
+import ru.netology.musicplayer.PlayerActivity.Companion.musicService
+import ru.netology.musicplayer.PlayerActivity.Companion.nowPlayingId
+import ru.netology.musicplayer.PlayerActivity.Companion.songPosition
 import ru.netology.musicplayer.databinding.ActivityPlayerBinding
-import ru.netology.musicplayer.dto.Music
-import ru.netology.musicplayer.dto.exitApplication
-import ru.netology.musicplayer.dto.formatDuration
-import ru.netology.musicplayer.dto.setSongPosition
+import ru.netology.musicplayer.dto.*
 import ru.netology.musicplayer.service.MusicService
 
 class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionListener {
@@ -52,6 +57,9 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         var min60: Boolean = false
         //проверка воспроизводимой/текущей песни
         var nowPlayingId: String =""
+        //для добавления favourite
+        var isFavourite: Boolean = false
+        var fIndex: Int = -1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -170,6 +178,19 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             startActivity(Intent.createChooser(shareIntent3, "Sharing Music File!!"))
         }
 
+        /**для добавления в favourite*/
+        binding.favouritesBtnPA.setOnClickListener {
+            if(isFavourite) {
+                isFavourite = false
+                binding.favouritesBtnPA.setImageResource(R.drawable.favorite_empty_icon)
+                FavouriteActivity.favouriteSong.removeAt(fIndex)
+            }else{
+                isFavourite = true
+                binding.favouritesBtnPA.setImageResource(R.drawable.favorite_icon)
+                FavouriteActivity.favouriteSong.add(musicListPA[songPosition])
+            }
+        }
+
     }
     /**для override fun onCreate(savedInstanceState: Bundle?) вынес в функцию, что бы не мешало */
     fun initializeLayout(){
@@ -229,6 +250,9 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     /** подгрузка главной иконки*/
     private fun setLayout(){
+        //для добавления в favourite
+        fIndex = favouriteChecker(musicListPA[songPosition].id)
+        //загрузка изобраения
         Glide.with(this)
             .load(musicListPA[songPosition].artUri)
             .apply(RequestOptions().placeholder(R.drawable.music_player_icon_slash_screen).centerCrop())
@@ -242,7 +266,15 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         if(min15 || min30 || min60 == true) {
             binding.timerBtnPA.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
         }
-    }
+        //для добавления в favourite
+        if(isFavourite == true) {
+            binding.favouritesBtnPA.setImageResource(R.drawable.favorite_icon)
+        }
+        else {
+            binding.favouritesBtnPA.setImageResource(R.drawable.favorite_empty_icon)
+        }
+        }
+
 
     /** медиаплеер*/
     private fun createMediaPlayer(){

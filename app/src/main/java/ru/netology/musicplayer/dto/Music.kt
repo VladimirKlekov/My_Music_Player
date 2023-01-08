@@ -1,6 +1,7 @@
 package ru.netology.musicplayer.dto
 
 import android.media.MediaMetadataRetriever
+import ru.netology.musicplayer.FavouriteActivity
 import ru.netology.musicplayer.PlayerActivity
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
@@ -32,9 +33,10 @@ fun getImgArt(path: String): ByteArray? {
 
     return retriever.embeddedPicture
 }
+
 //TODO
-fun setSongPosition(increment:Boolean){
-    if(!PlayerActivity.repeat)//для повторения песни
+fun setSongPosition(increment: Boolean) {
+    if (!PlayerActivity.repeat)//для повторения песни
     {
         if (increment) {
             if (PlayerActivity.musicListPA.size - 1 == PlayerActivity.songPosition) {
@@ -48,9 +50,21 @@ fun setSongPosition(increment:Boolean){
     }
 
 }
+/**для добавления favourite*/
+fun favouriteChecker(id: String): Int {
+    PlayerActivity.isFavourite = false
+    FavouriteActivity.favouriteSong.forEachIndexed { index, music ->
+        if (id == music.id) {
+            PlayerActivity.isFavourite = true
+            return index
+        }
+    }
+    //return 1
+    return -1
+}
 
 /**сделал отдельную функцию для выхода из приложения*/
-fun exitApplication(){
+fun exitApplication() {
     //добавил условие. иначе глючит при выходе
     if (PlayerActivity.musicService != null) {
         PlayerActivity.musicService!!.stopForeground(true)
@@ -58,6 +72,7 @@ fun exitApplication(){
         PlayerActivity.musicService = null
         exitProcess(1)
     }
+
 }
 //Класс MediaMetadataRetriever предоставляет унифицированный интерфейс для извлечения кадров и
 // метаданных из входного медиафайла. Он находится в пакете android.media . Например: получение
