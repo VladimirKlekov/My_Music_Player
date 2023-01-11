@@ -75,10 +75,11 @@ dependencies {
 //для получения Json. Хранение данных из любимых песней + json сервера
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     //2
 //
 //
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
    
 
 //Retrofit

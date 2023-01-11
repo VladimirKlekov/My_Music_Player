@@ -18,23 +18,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewbinding.BuildConfig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import ru.netology.musicplayer.MainActivity.Companion.MusicListMA
-import ru.netology.musicplayer.MainActivity.Companion.musicListSearch
-import ru.netology.musicplayer.MainActivity.Companion.search
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
+import ru.netology.musicplayer.ServerActivity.Companion.musicJsonServer
 import ru.netology.musicplayer.adapter.MusicAdapter
+import ru.netology.musicplayer.adapter.MusicServerAdapter
 import ru.netology.musicplayer.databinding.ActivityMainBinding
 import ru.netology.musicplayer.dto.Music
+import ru.netology.musicplayer.dto.MusicJson
 import ru.netology.musicplayer.dto.exitApplication
 import java.io.File
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var musicAdapter: MusicAdapter
+    private lateinit var musicServerAdapter: MusicServerAdapter
 
     /**перечень Music*/
     companion object {
@@ -184,6 +189,8 @@ class MainActivity : AppCompatActivity(){
     @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("SetTextI18n")//подавление количество песен (список)
     private fun initializeLayout() {
+        /**для получения музыки с сервера*/
+        getJsonServer()
         /**для recyclerview в activity_main*/
         search = false
         MusicListMA = getAllAudio()
@@ -302,7 +309,37 @@ class MainActivity : AppCompatActivity(){
         return super.onCreateOptionsMenu(menu)
     }
 
-     }
+    /**Клиет для получения json с сервера*/
+
+    fun getJsonServer(){
+
+            val logging = HttpLoggingInterceptor().apply {
+                if (BuildConfig.DEBUG) {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+            }
+            val client = OkHttpClient.Builder()
+//        .addInterceptor(logging)
+//        .connectTimeout(30, TimeUnit.SECONDS)
+                .build()
+
+            val url = " https://github.com/netology-code/andad-homeworks/raw/master/09_multimedia/data/album.json"
+            val request = Request.Builder()
+                .url(url)
+                .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {}
+                override fun onResponse(call: Call, response: Response){
+                    val test = response.body?.string().toString()
+                    musicJsonServer= GsonBuilder().create().fromJson(test, MusicJson::class.java)
+                    //println(musicJson)
+
+                }
+            })
+
+        }
+    }
+
 
 
 
