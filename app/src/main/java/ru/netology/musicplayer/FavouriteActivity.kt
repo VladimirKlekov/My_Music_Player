@@ -1,6 +1,8 @@
 package ru.netology.musicplayer
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,5 +47,16 @@ class FavouriteActivity : AppCompatActivity() {
         adapter = FavouriteAdapter(this, favouriteSong)//передача списка музыки в адптер
         binding.favouriteRV.adapter = adapter//приравнивание адаптеров
 
+        /**кнопка перемешивания в favourite_view*/
+        if(favouriteSong.size<1)
+            binding.shuffleBtnFA.visibility = View.INVISIBLE
+            binding.shuffleBtnFA.setOnClickListener{
+                val intent = Intent(this, PlayerActivity::class.java)
+                intent.putExtra("index", 0)
+                intent.putExtra("class","FavouriteShuffle")
+                startActivity(intent)
+            }
+
+        }
+
     }
-}

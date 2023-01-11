@@ -254,6 +254,18 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 //медиаплеер
                 //createMediaPlayer() - вынес в сервис
             }
+            "FavouriteShuffle"->{
+                //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
+                val intent = Intent(this, MusicService::class.java)
+                bindService(intent, this, BIND_AUTO_CREATE)
+                startService(intent)
+                musicListPA = ArrayList()
+                musicListPA.addAll(FavouriteActivity.favouriteSong)
+                //случайный порядок
+                musicListPA.shuffle()
+                //плэй-пауза
+                setLayout()
+            }
         }
     }
 
