@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.musicplayer.databinding.MusicServerViewBinding
-import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.Track
 
 class MusicServerAdapter(
@@ -17,8 +16,7 @@ class MusicServerAdapter(
 
     /** для управления music_view */
     class MyServerHolder(binding: MusicServerViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        val image = binding.imageSMV
-        val name = binding.nameSongSMV
+        val name = binding.nameSongServerView
 
     }
 
@@ -31,7 +29,6 @@ class MusicServerAdapter(
                 false
             )
         )
-
     }
 
    override fun onBindViewHolder(holder: MyServerHolder, position: Int) {

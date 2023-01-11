@@ -22,7 +22,7 @@ class MusicService : Service() {
     private val myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
 
-    //Для меню-увед с кнопкамию Получаю элементы управления транспортом, мультимедийные кнопки и команды от контроллеров и системы
+    //Для меню-увед с кнопкамию Получаю элементы управления ... мультимедийные кнопки и команды от контроллеров и системы
     private lateinit var mediaSession: MediaSessionCompat
     //
     private lateinit var runnable: Runnable

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ServerActivity"
+    tools:context=".MainActivity"
     tools:openDrawer="start">
 
     <LinearLayout
@@ -40,6 +40,63 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleSA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/subtitleSA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="subtitle"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+            <TextView
+                android:id="@+id/artistSA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="artist"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+            <TextView
+                android:id="@+id/publishedSA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="published"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+            <TextView
+                android:id="@+id/genreSA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="genre"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/cool_pink"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -61,7 +118,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/padding_25dp"
                 app:backgroundTint="@android:color/holo_red_light"
-                app:icon="@drawable/pause_icon"
+                app:icon="@drawable/play_icon"
                 app:iconSize="@dimen/padding_50dp"
                 app:iconTint="@color/white"
                 app:shapeAppearanceOverlay="@style/curved" />
@@ -75,15 +132,21 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/cool_pink"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/musicRVServer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="440dp"
             android:scrollbarThumbVertical="@drawable/scroll_bar_icon"
             android:scrollbars="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
             />
 
     </LinearLayout>

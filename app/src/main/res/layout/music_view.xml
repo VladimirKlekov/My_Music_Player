@@ -10,9 +10,9 @@
         android:id="@+id/imageMV"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginStart="5dp"
         android:src="@mipmap/music_player"
-        app:shapeAppearanceOverlay="@style/curved"
-        android:layout_marginStart="5dp"/>
+        app:shapeAppearanceOverlay="@style/curved" />
 
     <TextView
         android:id="@+id/songNameMV"
