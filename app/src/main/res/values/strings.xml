@@ -39,6 +39,9 @@
     <string name="sharing_music_file">Sharing Music File</string>
     <string name="search_view">Search view</string>
     <string name="music_server">Music from the server</string>
+    <string name="song_img">Song Image</string>
+    <string name="playlist_name">Playlist Name</string>
+    <string name="playlist_delete">Delete</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
