@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.musicplayer.PlaylistActivity
 import ru.netology.musicplayer.databinding.PlaylistViewBinding
+import ru.netology.musicplayer.dto.Playlist
 
-class PlayListViewAdapter(private val context: Context, private var playlist: ArrayList<String>) :
+class PlayListViewAdapter(private val context: Context, private var playlistList: ArrayList<Playlist>) :
     RecyclerView.Adapter<PlayListViewAdapter.MyHolder>() {
 
     /** для управления music_view */
@@ -21,11 +23,16 @@ class PlayListViewAdapter(private val context: Context, private var playlist: Ar
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        holder.name.text = playlist[position]
+        holder.name.text = playlistList[position].name
         holder.name.isSelected = true
     }
 
     override fun getItemCount(): Int {
-        return playlist.size
+        return playlistList.size
+    }
+    fun refreshPlaylist(){
+        playlistList = ArrayList()
+        playlistList.addAll(PlaylistActivity.musicPlaylist.ref)
+        notifyDataSetChanged()
     }
 }

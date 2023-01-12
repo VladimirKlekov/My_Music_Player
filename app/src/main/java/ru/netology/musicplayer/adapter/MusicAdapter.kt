@@ -76,6 +76,4 @@ class MusicAdapter(private val context: Context, private var musicList: ArrayLis
         //________
         ContextCompat.startActivity(context, intent, null)
     }
-
-
 }

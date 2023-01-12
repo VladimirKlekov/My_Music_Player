@@ -15,6 +15,15 @@ data class Music(
     val path: String,
     val artUri: String// Glide загрузка изображений иконки
 )
+class Playlist{
+    lateinit var name: String
+    lateinit var playlist: ArrayList<Music>
+    lateinit var createdBy: String
+    lateinit var createdOn: String
+}
+class MusicPlaylist{
+    var ref: ArrayList<Playlist> = ArrayList()
+}
 
 /**для продолжительности. Нужно форматирование. Иначе отображается куча цифр*/
 fun formatDuration(duration: Long): String {

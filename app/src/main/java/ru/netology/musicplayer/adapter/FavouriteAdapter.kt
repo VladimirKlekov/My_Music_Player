@@ -21,11 +21,9 @@ class FavouriteAdapter(private val context: Context, private var musicList: Arra
         val image = binding.songImgFV
         val name = binding.songNameFV
         val root = binding.root
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):MyHolder {
-
         return MyHolder(FavouriteViewBinding.inflate(LayoutInflater.from(context), parent, false))
     }
 
@@ -49,5 +47,4 @@ class FavouriteAdapter(private val context: Context, private var musicList: Arra
     override fun getItemCount(): Int {
         return musicList.size
     }
-
    }
