@@ -43,4 +43,7 @@
     <string name="song_img">Картнка</string>
     <string name="playlist_name">Название плэйлиста</string>
     <string name="playlist_delete">Удалить плэйлист</string>
+    <string name="playlist_details">Детали</string>
+    <string name="add">Добавить</string>
+    <string name="user_name">Название пользователя</string>
 </resources>
