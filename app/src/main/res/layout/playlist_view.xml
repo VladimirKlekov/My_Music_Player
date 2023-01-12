@@ -18,7 +18,6 @@
         android:contentDescription="@string/song_img"/>
 
     <TextView
-
         android:id="@+id/playlistName"
         android:layout_width="130dp"
         android:layout_height="40dp"
