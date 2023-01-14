@@ -47,6 +47,9 @@
     <string name="user_name">User name</string>
     <string name="playlist_exists">Playlist exists!!!</string>
     <string name="question_delete_playliist">Do you want to delete playlist?</string>
+    <string name="add_song">Add song</string>
+    <string name="remove_all">Remove all</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

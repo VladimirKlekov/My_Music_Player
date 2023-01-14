@@ -48,4 +48,6 @@
     <string name="user_name">Название пользователя</string>
     <string name="playlist_exists">Плей лист существует!!!</string>
     <string name="question_delete_playliist">Удалить плэйлист?</string>
+    <string name="add_song">Добавить музыку</string>
+    <string name="remove_all">Удалить все</string>
 </resources>

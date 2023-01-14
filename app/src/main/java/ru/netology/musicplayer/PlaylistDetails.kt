@@ -17,6 +17,6 @@ class PlaylistDetails : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.coolPick)
         setContentView(binding.root)
-        currentPlaylistPos = intent.extras?.getInt("index") as Int
+        currentPlaylistPos = intent.extras?.get("index") as Int
     }
 }
