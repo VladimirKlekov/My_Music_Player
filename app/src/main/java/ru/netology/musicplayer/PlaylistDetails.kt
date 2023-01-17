@@ -32,6 +32,9 @@ class PlaylistDetails : AppCompatActivity() {
         PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].playlist.addAll(MainActivity.MusicListMA)
         adapter = MusicAdapter(this, PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].playlist, playlistDetails = true)
         binding.playlistDetailsRV.adapter = adapter
+        binding.backBtnPD.setOnClickListener {
+            finish()
+        }
 
 
     }

@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.MainActivity
 import ru.netology.musicplayer.PlayerActivity
-import ru.netology.musicplayer.PlaylistDetails
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.databinding.MusicViewBinding
 import ru.netology.musicplayer.dto.Music
@@ -45,18 +44,29 @@ class MusicAdapter(private val context: Context, private var musicList: ArrayLis
             .load(musicList[position].artUri)
             .apply (RequestOptions().placeholder(R.drawable.music_player_icon_slash_screen).centerCrop())
                 .into(holder.image)
-        //продолж
-        holder.root.setOnClickListener {
-            when{
-                //поиск
-                MainActivity.search ->sendIntent(ref = "MusicAdapterSearch", pos = position)
-                //проверка воспроизводимой/текущей песни
-                musicList[position].id == PlayerActivity.nowPlayingId ->
-                    sendIntent(ref = "NowPlaying", pos = PlayerActivity.songPosition)
+        when {
+            playlistDetails->{
+                holder.root.setOnClickListener {
+                    sendIntent(ref = "PlaylistDetailsAdapter", pos = position)
+                }
+            }
 
-            else -> sendIntent(ref = "MusicAdapter", pos = position)
+                else -> {
+                    //продолж
+                    holder.root.setOnClickListener {
+                        when{
+                            //поиск
+                            MainActivity.search ->sendIntent(ref = "MusicAdapterSearch", pos = position)
+                            //проверка воспроизводимой/текущей песни
+                            musicList[position].id == PlayerActivity.nowPlayingId ->
+                                sendIntent(ref = "NowPlaying", pos = PlayerActivity.songPosition)
+
+                            else -> sendIntent(ref = "MusicAdapter", pos = position)
+                        }
+                    }
+                }
         }
-        }
+
         }
 
     override fun getItemCount(): Int {

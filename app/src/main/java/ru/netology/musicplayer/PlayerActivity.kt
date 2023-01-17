@@ -197,6 +197,15 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         //получаю данные из class MusicAdapter
         songPosition = intent.getIntExtra("index", 0)
         when(intent.getStringExtra("class")){
+            "PlaylistDetailsAdapter"->{
+                val intent = Intent(this, MusicService::class.java)
+                bindService(intent, this, BIND_AUTO_CREATE)
+                startService(intent)
+                musicListPA = ArrayList()
+                musicListPA.addAll(PlaylistActivity.musicPlaylist.ref[PlaylistDetails.currentPlaylistPos].playlist)
+
+                setLayout()
+            }
             "FavouriteAdapter"->{
                 //для запуска сервиса// (Intent) - это механизм для описания одной операции - выбрать фотографию, отправить письмо
                 val intent = Intent(this, MusicService::class.java)
@@ -204,6 +213,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 startService(intent)
                 musicListPA = ArrayList()
                 musicListPA.addAll(FavouriteActivity.favouriteSong)
+                musicListPA.shuffle()
                 setLayout()
             }
             "NowPlaying" ->{
