@@ -50,4 +50,5 @@
     <string name="question_delete_playliist">Удалить плэйлист?</string>
     <string name="add_song">Добавить музыку</string>
     <string name="remove_all">Удалить все</string>
+    <string name="search_song">Поиск музыки</string>
 </resources>

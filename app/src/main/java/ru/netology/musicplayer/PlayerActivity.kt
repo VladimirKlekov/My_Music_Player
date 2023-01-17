@@ -194,16 +194,24 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     }
     /**для override fun onCreate(savedInstanceState: Bundle?) вынес в функцию, что бы не мешало */
     fun initializeLayout(){
-        //получаю данные из class MusicAdapter
+        //получаю данные из раных классов
         songPosition = intent.getIntExtra("index", 0)
         when(intent.getStringExtra("class")){
+            "PlaylistDetailsShuffle"->{
+                val intent = Intent(this, MusicService::class.java)
+                bindService(intent, this, BIND_AUTO_CREATE)
+                startService(intent)
+                musicListPA = ArrayList()
+                musicListPA.addAll(PlaylistActivity.musicPlaylist.ref[PlaylistDetails.currentPlaylistPos].playlist)
+                musicListPA.shuffle()
+                setLayout()
+            }
             "PlaylistDetailsAdapter"->{
                 val intent = Intent(this, MusicService::class.java)
                 bindService(intent, this, BIND_AUTO_CREATE)
                 startService(intent)
                 musicListPA = ArrayList()
                 musicListPA.addAll(PlaylistActivity.musicPlaylist.ref[PlaylistDetails.currentPlaylistPos].playlist)
-
                 setLayout()
             }
             "FavouriteAdapter"->{

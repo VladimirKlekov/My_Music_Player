@@ -49,6 +49,7 @@
     <string name="question_delete_playliist">Do you want to delete playlist?</string>
     <string name="add_song">Add song</string>
     <string name="remove_all">Remove all</string>
+    <string name="search_song">Search song</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
