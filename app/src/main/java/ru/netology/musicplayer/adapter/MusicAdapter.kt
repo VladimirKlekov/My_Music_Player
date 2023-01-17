@@ -9,15 +9,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import ru.netology.musicplayer.MainActivity
-import ru.netology.musicplayer.PlayerActivity
-import ru.netology.musicplayer.R
+import ru.netology.musicplayer.*
 import ru.netology.musicplayer.databinding.MusicViewBinding
 import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.formatDuration
 
 class MusicAdapter(private val context: Context, private var musicList: ArrayList<Music>,
-                   private var playlistDetails: Boolean = false)
+                   private var playlistDetails: Boolean = false, private var selectionActivity: Boolean = false)
     :RecyclerView.Adapter<MusicAdapter.MyHolder>() {
     /** для управления music_view */
     class MyHolder(binding: MusicViewBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -49,6 +47,15 @@ class MusicAdapter(private val context: Context, private var musicList: ArrayLis
                 holder.root.setOnClickListener {
                     sendIntent(ref = "PlaylistDetailsAdapter", pos = position)
                 }
+            }
+            selectionActivity->{
+                holder.root.setOnClickListener {
+                    if(addSong(musicList[position]))
+                holder.root.setBackgroundColor(ContextCompat.getColor(context, R.color.cool_pink))
+
+                else
+                    holder.root.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            }
             }
 
                 else -> {
@@ -89,5 +96,24 @@ class MusicAdapter(private val context: Context, private var musicList: ArrayLis
         intent.putExtra("class",ref)
         //________
         ContextCompat.startActivity(context, intent, null)
+    }
+
+    /**добавить музыку в плэйлистах*/
+    private fun addSong(song: Music): Boolean{
+        PlaylistActivity.musicPlaylist.ref[PlaylistDetails.currentPlaylistPos].playlist.forEachIndexed { index, music ->
+            if(song.id == music.id){
+                PlaylistActivity.musicPlaylist.ref[PlaylistDetails.currentPlaylistPos].playlist.removeAt(index)
+                return false
+            }
+        }
+        PlaylistActivity.musicPlaylist.ref[PlaylistDetails.currentPlaylistPos].playlist.add(song)
+        return true
+    }
+    /**обновление плэйлиста*/
+    @SuppressLint("NotifyDataSetChanged")
+    fun refreshPlaylist(){
+        musicList = ArrayList()
+        musicList = PlaylistActivity.musicPlaylist.ref[PlaylistDetails.currentPlaylistPos].playlist
+        notifyDataSetChanged()
     }
 }

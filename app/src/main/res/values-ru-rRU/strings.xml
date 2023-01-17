@@ -51,4 +51,6 @@
     <string name="add_song">Добавить музыку</string>
     <string name="remove_all">Удалить все</string>
     <string name="search_song">Поиск музыки</string>
+    <string name="remove">Удалить</string>
+    <string name="question_remove_all_song">Удалить все песни?</string>
 </resources>

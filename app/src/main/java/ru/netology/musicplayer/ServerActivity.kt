@@ -31,6 +31,7 @@ class ServerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityServerBinding.inflate(layoutInflater)
+        setTheme(R.style.coolPick)
         setContentView(binding.root)
         musicListSA = ArrayList()
 

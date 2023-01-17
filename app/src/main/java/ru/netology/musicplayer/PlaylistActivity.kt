@@ -1,5 +1,6 @@
 package ru.netology.musicplayer
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -104,5 +105,13 @@ class PlaylistActivity : AppCompatActivity() {
             musicPlaylist.ref.add(tempPlayList)
             adapter.refreshPlaylist()
         }
+
+
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        //обновил
+        adapter.notifyDataSetChanged()
     }
 }

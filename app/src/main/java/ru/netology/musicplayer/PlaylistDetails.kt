@@ -2,14 +2,18 @@ package ru.netology.musicplayer
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityPlaylistDetailsBinding
+import ru.netology.musicplayer.dto.exitApplication
 
 class PlaylistDetails : AppCompatActivity() {
 
@@ -29,7 +33,6 @@ class PlaylistDetails : AppCompatActivity() {
         binding.playlistDetailsRV.setItemViewCacheSize(10)
         binding.playlistDetailsRV.setHasFixedSize(true)
         binding.playlistDetailsRV.layoutManager = LinearLayoutManager(this)
-        PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].playlist.addAll(MainActivity.MusicListMA)
         adapter = MusicAdapter(
             this,
             PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].playlist,
@@ -49,10 +52,30 @@ class PlaylistDetails : AppCompatActivity() {
             startActivity(Intent(this, SelectionActivity::class.java))
 
         }
+        binding.removeBtnPD.setOnClickListener {
+            val builder = MaterialAlertDialogBuilder(this)
+            builder.setTitle(R.string.remove)
+                .setMessage(R.string.question_remove_all_song)
+                .setPositiveButton(R.string.yes){ dialog, _ ->
+                    PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].playlist.clear()
+                    adapter.refreshPlaylist()
+                    dialog.dismiss()
+                }
+                .setNegativeButton(R.string.no){dialog, _ ->
+                    dialog.dismiss()
+                }
+            val customDialog = builder.create()
+            //показать
+            customDialog.show()
+            //Появляются кнопки в всплывающем меню: да и нет
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+            customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED)
+
+        }
 
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         binding.playlistNamePD.text = PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].name
@@ -69,6 +92,8 @@ class PlaylistDetails : AppCompatActivity() {
                 .into(binding.playlistImgPD)
             binding.shuffleBtnPD.visibility = View.VISIBLE
         }
+        //добавил обновление при добавление песни
+        adapter.notifyDataSetChanged()
 
     }
 }
