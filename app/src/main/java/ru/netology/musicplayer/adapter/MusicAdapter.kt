@@ -1,5 +1,6 @@
 package ru.netology.musicplayer.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,13 +11,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.netology.musicplayer.MainActivity
 import ru.netology.musicplayer.PlayerActivity
+import ru.netology.musicplayer.PlaylistDetails
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.databinding.MusicViewBinding
 import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.formatDuration
 
-class MusicAdapter(private val context: Context, private var musicList: ArrayList<Music>) :
-    RecyclerView.Adapter<MusicAdapter.MyHolder>() {
+class MusicAdapter(private val context: Context, private var musicList: ArrayList<Music>,
+                   private var playlistDetails: Boolean = false)
+    :RecyclerView.Adapter<MusicAdapter.MyHolder>() {
     /** для управления music_view */
     class MyHolder(binding: MusicViewBinding) : RecyclerView.ViewHolder(binding.root) {
         val title = binding.songNameMV
@@ -61,6 +64,7 @@ class MusicAdapter(private val context: Context, private var musicList: ArrayLis
     }
 
     /** для поиска */
+    @SuppressLint("NotifyDataSetChanged")
     fun updateMusicList(searchList : ArrayList<Music>){
         musicList = ArrayList()
         musicList.addAll(searchList)

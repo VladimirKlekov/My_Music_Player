@@ -37,7 +37,8 @@
             android:text="@string/playlist_btn"
             android:textColor="@color/white"
             android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:singleLine="true"/>
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_marginTop="10dp"
-        android:background="@color/cool_pink"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,8 @@
             android:gravity="center|start"
             android:text="@string/playlist_name"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:background="@color/cool_pink"/>
 
     </LinearLayout>
 
@@ -96,7 +97,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9"
         app:strokeColor="@color/cool_pink"
-        app:strokeWidth="@dimen/padding_2dp" />
+        app:strokeWidth="@dimen/padding_2dp"
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:layout_width="match_parent"

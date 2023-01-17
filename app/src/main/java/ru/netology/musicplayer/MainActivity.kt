@@ -26,7 +26,6 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import ru.netology.musicplayer.ServerActivity.Companion.musicJsonServer
 import ru.netology.musicplayer.adapter.MusicAdapter
-import ru.netology.musicplayer.adapter.MusicServerAdapter
 import ru.netology.musicplayer.databinding.ActivityMainBinding
 import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.MusicJson
@@ -39,7 +38,6 @@ class MainActivity : AppCompatActivity(){
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var musicAdapter: MusicAdapter
-    private lateinit var musicServerAdapter: MusicServerAdapter
 
     /**перечень Music*/
     companion object {

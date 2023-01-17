@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import ru.netology.musicplayer.PlaylistActivity.Companion.musicPlaylist
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.adapter.PlayListViewAdapter
 import ru.netology.musicplayer.databinding.ActivityPlaylistBinding
@@ -74,11 +75,11 @@ class PlaylistActivity : AppCompatActivity() {
                 val playlistName = binder.playlistName.text
                 val createBy = binder.yourName.text
                 //проверка между строками
-                if(playlistName != null && createBy != null){
+                if(playlistName != null && createBy != null)
                     if(playlistName.isNotEmpty() && createBy.isNotEmpty()){
                         addPlaylist(playlistName.toString(),createBy.toString())
                     }
-                }
+
                 dialog.dismiss()
             }.show()
     }
@@ -97,7 +98,7 @@ class PlaylistActivity : AppCompatActivity() {
             tempPlayList.name = name
             tempPlayList.playlist = ArrayList()
             tempPlayList.createdBy = createBy
-            val calendar = java.util.Calendar.getInstance().time
+            val calendar = Calendar.getInstance().time
             val sdf = SimpleDateFormat("dd MM yyyy", Locale.ENGLISH)
             tempPlayList.createdOn = sdf.format(calendar)
             musicPlaylist.ref.add(tempPlayList)

@@ -1,5 +1,6 @@
 package ru.netology.musicplayer.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -14,7 +15,6 @@ import ru.netology.musicplayer.PlaylistDetails
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.databinding.PlaylistViewBinding
 import ru.netology.musicplayer.dto.Playlist
-import ru.netology.musicplayer.dto.exitApplication
 
 class PlayListViewAdapter(private val context: Context, private var playlistList: ArrayList<Playlist>) :
     RecyclerView.Adapter<PlayListViewAdapter.MyHolder>() {
@@ -67,6 +67,7 @@ class PlayListViewAdapter(private val context: Context, private var playlistList
     override fun getItemCount(): Int {
         return playlistList.size
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun refreshPlaylist(){
         playlistList = ArrayList()
         playlistList.addAll(PlaylistActivity.musicPlaylist.ref)
