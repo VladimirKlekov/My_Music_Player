@@ -10,6 +10,7 @@ import ru.netology.musicplayer.adapter.FavouriteAdapter
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityFavouriteBinding
 import ru.netology.musicplayer.dto.Music
+import ru.netology.musicplayer.dto.checkPlaylist
 
 class FavouriteActivity : AppCompatActivity() {
 
@@ -26,6 +27,7 @@ class FavouriteActivity : AppCompatActivity() {
         setTheme(R.style.coolPick)
         binding = ActivityFavouriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        favouriteSong = checkPlaylist(favouriteSong)
         //для recyclerview
 //        val tempList = ArrayList<String>()
 //        tempList.add("Song 1")

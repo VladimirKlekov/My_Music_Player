@@ -3,6 +3,7 @@ package ru.netology.musicplayer.dto
 import android.media.MediaMetadataRetriever
 import ru.netology.musicplayer.FavouriteActivity
 import ru.netology.musicplayer.PlayerActivity
+import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
@@ -70,6 +71,15 @@ fun favouriteChecker(id: String): Int {
     }
     //return 1
     return -1
+
+}
+fun checkPlaylist(playlist: ArrayList<Music>): ArrayList<Music>{
+    playlist.forEachIndexed { index, music ->
+        val file = File(music.path)
+        if(!file.exists())
+            playlist.removeAt(index)
+    }
+    return playlist
 }
 
 /**сделал отдельную функцию для выхода из приложения*/
@@ -81,6 +91,8 @@ fun exitApplication() {
         PlayerActivity.musicService = null
         exitProcess(1)
     }
+
+
 
 }
 //Класс MediaMetadataRetriever предоставляет унифицированный интерфейс для извлечения кадров и

@@ -14,8 +14,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.GsonBuilder
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityPlaylistDetailsBinding
+import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.MusicPlaylist
+import ru.netology.musicplayer.dto.checkPlaylist
 import ru.netology.musicplayer.dto.exitApplication
+import java.io.File
 
 class PlaylistDetails : AppCompatActivity() {
 
@@ -32,6 +35,8 @@ class PlaylistDetails : AppCompatActivity() {
         binding = ActivityPlaylistDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         currentPlaylistPos = intent.extras?.get("index") as Int
+        PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].playlist =
+            checkPlaylist(playlist =PlaylistActivity.musicPlaylist.ref[currentPlaylistPos].playlist)
         binding.playlistDetailsRV.setItemViewCacheSize(10)
         binding.playlistDetailsRV.setHasFixedSize(true)
         binding.playlistDetailsRV.layoutManager = LinearLayoutManager(this)
@@ -102,4 +107,5 @@ class PlaylistDetails : AppCompatActivity() {
         editor.putString("MusicPlaylist", jsonStringPlaylist)
         editor.apply()
     }
+
 }
