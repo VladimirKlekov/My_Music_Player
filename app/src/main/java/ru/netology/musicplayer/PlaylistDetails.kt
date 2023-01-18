@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.GsonBuilder
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityPlaylistDetailsBinding
+import ru.netology.musicplayer.dto.MusicPlaylist
 import ru.netology.musicplayer.dto.exitApplication
 
 class PlaylistDetails : AppCompatActivity() {
@@ -94,6 +96,10 @@ class PlaylistDetails : AppCompatActivity() {
         }
         //добавил обновление при добавление песни
         adapter.notifyDataSetChanged()
-
+        /**json сохранение списка любимых песен*/
+        val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE).edit()
+        val jsonStringPlaylist = GsonBuilder().create().toJson(PlaylistActivity.musicPlaylist)
+        editor.putString("MusicPlaylist", jsonStringPlaylist)
+        editor.apply()
     }
 }

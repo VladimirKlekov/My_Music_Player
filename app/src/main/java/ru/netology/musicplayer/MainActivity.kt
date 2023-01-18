@@ -29,9 +29,11 @@ import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityMainBinding
 import ru.netology.musicplayer.dto.Music
 import ru.netology.musicplayer.dto.MusicJson
+import ru.netology.musicplayer.dto.MusicPlaylist
 import ru.netology.musicplayer.dto.exitApplication
 import java.io.File
 import java.io.IOException
+import java.util.Collections.addAll
 
 class MainActivity : AppCompatActivity(){
 
@@ -63,7 +65,8 @@ class MainActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if(requestRuntimePermission()) {
             initializeLayout()
-            //json для получения списка любимых песен
+
+            /**json для получения списка любимых песен*/
             FavouriteActivity.favouriteSong = ArrayList()
             val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE)
             val jsonString = editor.getString("FavouriteSongs", null)
@@ -71,6 +74,14 @@ class MainActivity : AppCompatActivity(){
             if(jsonString != null){
                 val data: ArrayList<Music> = GsonBuilder().create().fromJson(jsonString, typeToken)
                 FavouriteActivity.favouriteSong.addAll(data)
+            }
+
+            /**json для плэй листа*/
+            PlaylistActivity.musicPlaylist = MusicPlaylist()
+            val jsonStringPlaylist = editor.getString("MusicPlaylist", null)
+            if(jsonStringPlaylist != null){
+                val dataPlaylist: MusicPlaylist = GsonBuilder().create().fromJson(jsonStringPlaylist, MusicPlaylist::class.java)
+                PlaylistActivity.musicPlaylist = dataPlaylist
             }
 
         }
@@ -277,6 +288,8 @@ class MainActivity : AppCompatActivity(){
         val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE).edit()
         val jsonString = GsonBuilder().create().toJson(FavouriteActivity.favouriteSong)
         editor.putString("FavouriteSongs", jsonString)
+        val jsonStringPlaylist = GsonBuilder().create().toJson(PlaylistActivity.musicPlaylist)
+        editor.putString("MusicPlaylist", jsonStringPlaylist)
         editor.apply()
     }
 
