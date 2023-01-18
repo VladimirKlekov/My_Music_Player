@@ -1,16 +1,15 @@
 package ru.netology.musicplayer.service
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
-import android.os.Binder
-import android.os.Handler
-import android.os.IBinder
-import android.os.Looper
+import android.os.*
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
+import ru.netology.musicplayer.MainActivity
 import ru.netology.musicplayer.PlayerActivity
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.application.ApplicationClass
@@ -41,7 +40,17 @@ class MusicService : Service() {
     }
 
     /**меню уведомления с кнопками*/
+    @SuppressLint("UnspecifiedImmutableFlag")
     fun showNotification(playPauseBtn:Int) {
+        val intent = Intent(baseContext, MainActivity::class.java)
+
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+        val contentIntent = PendingIntent.getActivity(this, 0, intent, flag)
+
         //действия кнопки в меню-уведомлении
         val prevIntent = Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(baseContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -66,6 +75,7 @@ class MusicService : Service() {
 
         //уведомление при старте. установить как минимум smallIcon, contentTitle и contentText. Если пропустить одно, уведомление не будет отображаться
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
+            .setContentIntent(contentIntent)
             .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
             .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
             .setSmallIcon(R.drawable.music_icon)
