@@ -1,10 +1,12 @@
 package ru.netology.musicplayer
 
 import android.annotation.SuppressLint
+import android.app.IntentService
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.database.Cursor
 import android.graphics.Color
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -12,6 +14,7 @@ import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.MediaStore
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.Toast
@@ -72,7 +75,23 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initializeLayout()
+        //сделал initializeLayout() с intent filters для открытия аудио
+        if(intent.data?.scheme.contentEquals("content")){
+            val intentService = Intent(this, MusicService::class.java)
+            bindService(intentService, this, BIND_AUTO_CREATE)
+            startService(intentService)
+            musicListPA = ArrayList()
+            musicListPA.add(getMusicDetails(intent.data!!))
+            musicListPA.shuffle()
+            //загрузка изобраения
+            Glide.with(this)
+                .load(getImgArt(musicListPA[songPosition].path))
+                .apply(RequestOptions().placeholder(R.drawable.music_player_icon_slash_screen).centerCrop())
+                .into(binding.songImgPA)
+            binding.songNamePA.text = musicListPA[songPosition].title
+        }
+        else initializeLayout()
+
 
         /**кнопки*/
         binding.previousBtnPA.setOnClickListener {
@@ -469,6 +488,30 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }.start()
             dialog.dismiss()
         }
+    }
+
+    /** для intent filters*/
+    private fun getMusicDetails(contentUri: Uri):Music{
+         var cursor: Cursor? = null
+        try {
+            val projection = arrayOf(MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DURATION)
+            cursor = this.contentResolver.query(contentUri, projection, null, null,null)
+            val dataColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+            val durationColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+            cursor!!.moveToFirst()
+            val path = dataColumn?.let { cursor.getString(it) }
+            val duration = durationColumn?.let { cursor.getLong(it) }!!
+            return Music(id = "Unknown", title = path.toString(), album = "Unknown", artist = "Unknown", duration = duration,
+                artUri = "Unknown", path = path.toString())
+
+        }finally {
+            cursor?.close()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(musicListPA[songPosition].id == "Unknown" && !isPlaying) exitApplication()
     }
 }
 
