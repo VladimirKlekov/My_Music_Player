@@ -9,11 +9,14 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.*
 import android.provider.MediaStore
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.app.NotificationCompat
 import ru.netology.musicplayer.MainActivity
 import ru.netology.musicplayer.NowPlaying
 import ru.netology.musicplayer.PlayerActivity
+import ru.netology.musicplayer.PlayerActivity.Companion.mediaPlayer
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.application.ApplicationClass
 import ru.netology.musicplayer.application.NotificationReceiver
@@ -46,7 +49,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     /**меню уведомления с кнопками*/
     @SuppressLint("UnspecifiedImmutableFlag")
-    fun showNotification(playPauseBtn:Int) {
+    fun showNotification(playPauseBtn:Int, playbackSpeed: Float) {
         val intent = Intent(baseContext, MainActivity::class.java)
 
         val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -98,9 +101,55 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             .addAction(R.drawable.next_icon, "Next", nextPendingIntent)
             .addAction(R.drawable.exit_icon, "Exit", exitPendingIntent)
             .build()
-        //предоставляя пользователю текущее уведомление, которое будет отображаться в этом состоянии.
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            val playbackSpeed = if(PlayerActivity.isPlaying) 1F else 0F
+            mediaSession.setMetadata(
+                MediaMetadataCompat.Builder()
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer!!.duration.toLong())
+                .build())
+            val playBackState = PlaybackStateCompat.Builder()
+                .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer!!.currentPosition.toLong(), playbackSpeed)
+                .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+                .build()
+            mediaSession.setPlaybackState(playBackState)
+            mediaSession.setCallback(object: MediaSessionCompat.Callback(){
+
+                //called when headphones buttons are pressed
+                //currently only pause or play music on button click
+                override fun onMediaButtonEvent(mediaButtonEvent: Intent?): Boolean {
+                    if(PlayerActivity.isPlaying){
+                        //pause music
+                        PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.play_icon)
+                        NowPlaying.binding.playPauseBtnNP.setIconResource(R.drawable.play_icon)
+                        PlayerActivity.isPlaying = false
+                        mediaPlayer!!.pause()
+                        showNotification(R.drawable.play_icon, 0F)
+                    }else{
+                        //play music
+                        PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
+                        NowPlaying.binding.playPauseBtnNP.setIconResource(R.drawable.pause_icon)
+                        PlayerActivity.isPlaying = true
+                        mediaPlayer!!.start()
+                        showNotification(R.drawable.pause_icon, 1F)
+                    }
+                    return super.onMediaButtonEvent(mediaButtonEvent)
+                }
+                override fun onSeekTo(pos: Long) {
+                    super.onSeekTo(pos)
+                    mediaPlayer!!.seekTo(pos.toInt())
+                    val playBackStateNew = PlaybackStateCompat.Builder()
+                        .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer!!.currentPosition.toLong(), playbackSpeed)
+                        .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+                        .build()
+                    mediaSession.setPlaybackState(playBackStateNew)
+                }
+            })
+        }
+//предоставляя пользователю текущее уведомление, которое будет отображаться в этом состоянии.
         startForeground(13, notification)
     }
+
+
     /** медиаплеер*/
     fun createMediaPlayer() {
         try {
@@ -111,7 +160,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             PlayerActivity.musicService!!.mediaPlayer!!.prepare()
             PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
             //уведомления
-            PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon)
+            PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon, 0F)
             PlayerActivity.binding.tvSeekBarStart.text = formatDuration(mediaPlayer!!.currentPosition.toLong())
             PlayerActivity.binding.tvSeekBarEnd.text = formatDuration(mediaPlayer!!.duration.toLong())
             PlayerActivity.binding.seekBarPA.progress = 0
@@ -139,7 +188,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.play_icon)
             NowPlaying.binding.playPauseBtnNP.setIconResource(R.drawable.play_icon)
             //для меню-уведомления
-            showNotification(R.drawable.play_icon)
+            showNotification(R.drawable.play_icon, 0F)
             PlayerActivity.isPlaying = false
             mediaPlayer!!.pause()
 
@@ -149,7 +198,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
             NowPlaying.binding.playPauseBtnNP.setIconResource(R.drawable.pause_icon)
             //для меню-уведомления
-            showNotification(R.drawable.pause_icon)
+            showNotification(R.drawable.pause_icon, 1F)
             PlayerActivity.isPlaying = true
             mediaPlayer!!.start()
         }
