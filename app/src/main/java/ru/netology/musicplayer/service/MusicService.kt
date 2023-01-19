@@ -5,11 +5,14 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.*
+import android.provider.MediaStore
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 import ru.netology.musicplayer.MainActivity
+import ru.netology.musicplayer.NowPlaying
 import ru.netology.musicplayer.PlayerActivity
 import ru.netology.musicplayer.R
 import ru.netology.musicplayer.application.ApplicationClass
@@ -17,9 +20,11 @@ import ru.netology.musicplayer.application.NotificationReceiver
 import ru.netology.musicplayer.dto.formatDuration
 import ru.netology.musicplayer.dto.getImgArt
 
-class MusicService : Service() {
+class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     private val myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
+    //Handling Calls
+    lateinit var audioManager: AudioManager
 
     //Для меню-увед с кнопкамию Получаю элементы управления ... мультимедийные кнопки и команды от контроллеров и системы
     private lateinit var mediaSession: MediaSessionCompat
@@ -125,5 +130,28 @@ class MusicService : Service() {
                Handler(Looper.getMainLooper()).postDelayed(runnable,200)
 }
         Handler(Looper.getMainLooper()).postDelayed(runnable,0)
+    }
+
+    /**Handling Calls*/
+    override fun onAudioFocusChange(focusChange: Int) {
+        if (focusChange <= 0) {
+            //пауза
+            PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.play_icon)
+            NowPlaying.binding.playPauseBtnNP.setIconResource(R.drawable.play_icon)
+            //для меню-уведомления
+            showNotification(R.drawable.play_icon)
+            PlayerActivity.isPlaying = false
+            mediaPlayer!!.pause()
+
+        }
+        else {
+            //вопрсоизведение
+            PlayerActivity.binding.playPauseBtnPA.setIconResource(R.drawable.pause_icon)
+            NowPlaying.binding.playPauseBtnNP.setIconResource(R.drawable.pause_icon)
+            //для меню-уведомления
+            showNotification(R.drawable.pause_icon)
+            PlayerActivity.isPlaying = true
+            mediaPlayer!!.start()
+        }
     }
 }

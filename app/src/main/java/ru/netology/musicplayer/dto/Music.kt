@@ -86,14 +86,14 @@ fun checkPlaylist(playlist: ArrayList<Music>): ArrayList<Music>{
 fun exitApplication() {
     //добавил условие. иначе глючит при выходе
     if (PlayerActivity.musicService != null) {
+        //Handling Calls
+        PlayerActivity.musicService!!.audioManager.abandonAudioFocus(PlayerActivity.musicService)
+        //
         PlayerActivity.musicService!!.stopForeground(true)
         PlayerActivity.musicService!!.mediaPlayer!!.release()
         PlayerActivity.musicService = null
         exitProcess(1)
     }
-
-
-
 }
 //Класс MediaMetadataRetriever предоставляет унифицированный интерфейс для извлечения кадров и
 // метаданных из входного медиафайла. Он находится в пакете android.media . Например: получение
