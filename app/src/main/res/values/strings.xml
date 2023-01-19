@@ -56,6 +56,9 @@
     <string name="email_feedback">Email Address (Optional)</string>
     <string name="send">Send</string>
     <string name="went_something_wrong">Went Something Wrong!!</string>
+    <string name="set_theme">Set Theme</string>
+    <string name="sort_by">Sort By</string>
+    <string name="version_name">Version Name</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

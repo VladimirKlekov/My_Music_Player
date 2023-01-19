@@ -3,6 +3,7 @@ package ru.netology.musicplayer
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.netology.musicplayer.databinding.ActivitySettingsBinding
 import ru.netology.musicplayer.dto.exitApplication
@@ -45,7 +46,10 @@ class SettingsActivity : AppCompatActivity() {
             val customDialog = builder.create()
             customDialog.show()
 
-            setDialogBtnBackground(this, customDialog)
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+            customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED)
+
+            //setDialogBtnBackground(this, customDialog)
         }
     }
 
@@ -65,13 +69,11 @@ class SettingsActivity : AppCompatActivity() {
                 }
             val customDialog = builder.create()
             customDialog.show()
-
-            setDialogBtnBackground(this, customDialog)
+            customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+            customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED)
         }
     }
     private fun setVersionDetails():String{
         return "Version Name: ${BuildConfig.VERSION_NAME}"
-    }
-}
     }
 }

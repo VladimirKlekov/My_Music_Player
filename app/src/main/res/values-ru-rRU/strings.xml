@@ -57,4 +57,7 @@
     <string name="email_feedback">Электронная почта</string>
     <string name="send">Отправить</string>
     <string name="went_something_wrong">Пошло что-то не так</string>
+    <string name="set_theme">Установить тему</string>
+    <string name="sort_by">Сортировать по</string>
+    <string name="version_name">Название версии</string>
 </resources>
