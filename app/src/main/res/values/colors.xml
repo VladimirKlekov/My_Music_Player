@@ -12,4 +12,7 @@
     <color name="moccasin">#FFE4B5</color>
     <color name="blue">#1E90FF</color>
     <color name="cool_pink">#DC143C</color>
+    <color name="cool_blue">#0091EA</color>
+    <color name="cool_green">#64DD17</color>
+    <color name="yellow">#FFD600</color>
 </resources>

@@ -1,6 +1,7 @@
 package ru.netology.musicplayer
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -10,6 +11,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -17,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.BuildConfig
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,6 +28,11 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
+import ru.netology.musicplayer.MainActivity.Companion.MusicListMA
+import ru.netology.musicplayer.MainActivity.Companion.currentGradient
+import ru.netology.musicplayer.MainActivity.Companion.currentThemeNav
+import ru.netology.musicplayer.MainActivity.Companion.search
+import ru.netology.musicplayer.MainActivity.Companion.themeIndex
 import ru.netology.musicplayer.ServerActivity.Companion.musicJsonServer
 import ru.netology.musicplayer.adapter.MusicAdapter
 import ru.netology.musicplayer.databinding.ActivityMainBinding
@@ -33,7 +42,6 @@ import ru.netology.musicplayer.dto.MusicPlaylist
 import ru.netology.musicplayer.dto.exitApplication
 import java.io.File
 import java.io.IOException
-import java.util.Collections.addAll
 
 class MainActivity : AppCompatActivity(){
 
@@ -47,16 +55,29 @@ class MainActivity : AppCompatActivity(){
         //поиск музыки
         lateinit var musicListSearch: ArrayList<Music>
         var search: Boolean = false
-           }
+        var themeIndex: Int = 0
+        val currentTheme = arrayOf(R.style.coolPink, R.style.coolBlue,  R.style.coolPurple, R.style.coolGreen, R.style.coolBlack)
+        val currentThemeNav = arrayOf(R.style.coolPinkNav, R.style.coolBlueNav,  R.style.coolPurpleNav, R.style.coolGreenNav, R.style.coolBlackNav)
+        val currentGradient = arrayOf(R.drawable.gradient_pink, R.drawable.gradient_blue, R.drawable.gradient_purple, R.drawable.gradient_green,
+            R.drawable.gradient_black)
+        var sortOrder: Int = 0
+        val sortingList = arrayOf(MediaStore.Audio.Media.DATE_ADDED + " DESC", MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.SIZE + " DESC")
+
+    }
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //nawdraw
+        val themeEditor = getSharedPreferences("THEMES", MODE_PRIVATE)
+        themeIndex = themeEditor.getInt("themeIndex", 0)
         //requestRuntimePermission()//глючит разрешение
-        setTheme(R.style.coolPinkNav)
+        setTheme(currentThemeNav[themeIndex])
         //вернул из private fun initializeLayout() из-за багов
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         /**для nav drawer выезжающая навигационная панель из меню*/
         toggle = ActionBarDrawerToggle(this, binding.root, R.string.open, R.string.close)
@@ -105,18 +126,25 @@ class MainActivity : AppCompatActivity(){
         }
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navFeedback -> Toast.makeText(
-                    baseContext,
-                    (R.string.feedback),
-                    Toast.LENGTH_SHORT
-                ).show()
-                R.id.navSetting -> Toast.makeText(
-                    baseContext,
-                    (R.string.setting),
-                    Toast.LENGTH_SHORT
-                ).show()
-                R.id.navAbout -> Toast.makeText(baseContext, (R.string.about), Toast.LENGTH_SHORT)
-                    .show()
+                R.id.navFeedback ->
+                    startActivity(Intent(this@MainActivity, FeedbackActivity::class.java))
+
+//                    Toast.makeText(
+//                    baseContext,
+//                    (R.string.feedback),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+                R.id.navSetting ->
+                    startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+//                    Toast.makeText(
+//                    baseContext,
+//                    (R.string.setting),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+                R.id.navAbout ->
+                    startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+//                    Toast.makeText(baseContext, (R.string.about), Toast.LENGTH_SHORT)
+//                    .show()
                // R.id.navExit -> exitProcess(1) вариант без уведомления пользователя
                 R.id.navExit -> {
                     //вариант с уведомлением(запросом) пользователя
@@ -202,6 +230,9 @@ class MainActivity : AppCompatActivity(){
         getJsonServer()
         /**для recyclerview в activity_main*/
         search = false
+        //для сортировки
+        val sortEditor = getSharedPreferences("SORTING", MODE_PRIVATE)
+        sortOrder = sortEditor.getInt("sortOrder", 0)
         MusicListMA = getAllAudio()
 //        val musicList = ArrayList<String>()//список музыки
 //        musicList.add("1 Song")//заменил на MusicListMA= getAllAudio()
@@ -238,7 +269,7 @@ class MainActivity : AppCompatActivity(){
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
             projection,selection,
             null,
-             null)
+             sortingList[sortOrder])
         if(cursor != null){
             if(cursor.moveToFirst())
                 do {
@@ -282,6 +313,7 @@ class MainActivity : AppCompatActivity(){
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onResume() {
         super.onResume()
         /**json сохранение списка любимых песен*/
@@ -291,12 +323,23 @@ class MainActivity : AppCompatActivity(){
         val jsonStringPlaylist = GsonBuilder().create().toJson(PlaylistActivity.musicPlaylist)
         editor.putString("MusicPlaylist", jsonStringPlaylist)
         editor.apply()
+        //для сортировки
+        val sortEditor = getSharedPreferences("SORTING", MODE_PRIVATE)
+        val sortValue = sortEditor.getInt("sortOrder", 0)
+        if(sortOrder != sortValue){
+            sortOrder = sortValue
+            MusicListMA = getAllAudio()
+            musicAdapter.updateMusicList(MusicListMA)
+        }
+        if(PlayerActivity.musicService != null) binding.nowPlaying.visibility = View.VISIBLE
     }
 
     /**Поиск*/
     //https://developer.alexanderklimov.ru/android/theory/menu.php
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_view_menu, menu)
+        //для загрузки градиентов
+        findViewById<LinearLayout>(R.id.linearLayoutNav)?.setBackgroundResource(currentGradient[themeIndex])
         // импортировал as import androidx.appcompat.widget.SearchView
         val searchView = menu?.findItem(R.id.searchView)?.actionView as SearchView
         //объект прослушивателя, который получает обратные вызовы, когда пользователь выполняет
@@ -321,14 +364,12 @@ class MainActivity : AppCompatActivity(){
     }
 
     /**Клиет для получения json с сервера*/
-
     fun getJsonServer(){
-
-            val logging = HttpLoggingInterceptor().apply {
-                if (BuildConfig.DEBUG) {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
-            }
+//            val logging = HttpLoggingInterceptor().apply {
+//                if (BuildConfig.DEBUG) {
+//                    level = HttpLoggingInterceptor.Level.BODY
+//                }
+//            }
             val client = OkHttpClient.Builder()
 //        .addInterceptor(logging)
 //        .connectTimeout(30, TimeUnit.SECONDS)
@@ -344,7 +385,6 @@ class MainActivity : AppCompatActivity(){
                     val test = response.body?.string().toString()
                     musicJsonServer= GsonBuilder().create().fromJson(test, MusicJson::class.java)
                     //println(musicJson)
-
                 }
             })
 

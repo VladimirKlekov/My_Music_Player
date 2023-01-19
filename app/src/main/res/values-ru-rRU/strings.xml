@@ -53,4 +53,8 @@
     <string name="search_song">Поиск музыки</string>
     <string name="remove">Удалить</string>
     <string name="question_remove_all_song">Удалить все песни?</string>
+    <string name="topic_feedback">Тема</string>
+    <string name="email_feedback">Электронная почта</string>
+    <string name="send">Отправить</string>
+    <string name="went_something_wrong">Пошло что-то не так</string>
 </resources>

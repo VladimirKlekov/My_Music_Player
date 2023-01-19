@@ -15,7 +15,7 @@ class SelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelectionBinding.inflate(layoutInflater)
-        setTheme(R.style.coolPick)
+        setTheme(MainActivity.currentTheme[MainActivity.themeIndex])
         setContentView(binding.root)
 
         binding.selectionRV.setItemViewCacheSize(10)
