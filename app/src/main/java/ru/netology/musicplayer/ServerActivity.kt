@@ -24,14 +24,15 @@ class ServerActivity : AppCompatActivity() {
 
     companion object {
         var musicJsonServer: MusicJson? = null
-        }
+    }
 
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(MainActivity.currentTheme[MainActivity.themeIndex])
         binding = ActivityServerBinding.inflate(layoutInflater)
-        setTheme(R.style.coolPick)
+       // setTheme(R.style.coolPick)
         setContentView(binding.root)
         musicListSA = ArrayList()
 
@@ -43,7 +44,7 @@ class ServerActivity : AppCompatActivity() {
                 id= element.id,
                 file = urlSong+element.file
             )
-        musicListSA.add(x)
+            musicListSA.add(x)
         }
 
         createMediaPlayer()
@@ -51,10 +52,10 @@ class ServerActivity : AppCompatActivity() {
         musicServerAdapter?.updateMusicList(serverList = musicListSA)
 
 
-       binding.previousBtnServer.setOnClickListener {
-           --songPositionServer
-           createMediaPlayer()
-           playMusic()
+        binding.previousBtnServer.setOnClickListener {
+            --songPositionServer
+            createMediaPlayer()
+            playMusic()
         }
 
         binding.nextBtnServer.setOnClickListener {
@@ -99,7 +100,7 @@ class ServerActivity : AppCompatActivity() {
     }
 
     private fun pauseMusic() {
-       binding.playPauseBtnServer.setIconResource(R.drawable.play_icon)
+        binding.playPauseBtnServer.setIconResource(R.drawable.play_icon)
         isPlayingServer = false
         mediaServerPlayer!!.pause()
     }
@@ -107,7 +108,7 @@ class ServerActivity : AppCompatActivity() {
     /** медиаплеер*/
     fun createMediaPlayer() {
         try {
-           if (mediaServerPlayer == null) mediaServerPlayer =
+            if (mediaServerPlayer == null) mediaServerPlayer =
                 MediaPlayer()
             mediaServerPlayer!!.reset()
             mediaServerPlayer!!.setDataSource(musicListSA[songPositionServer].file )
